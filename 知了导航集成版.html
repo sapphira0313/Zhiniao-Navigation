@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知鸟导航</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a1a2e;
+            --card-bg: #ffffff;
+            --text-dark: white;
+            --text-light: white;
+        }
+
+        /* 全局隐藏焦点轮廓 */
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* 特别针对拖拽元素 */
+        [draggable="true"]:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* 针对Webkit浏览器的特殊处理 */
+        *:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        *::-moz-focus-inner {
+            border: 0 !important;
+        }
+        
+        /* 针对导航项的特殊处理 */
+        .nav-item {
+            outline: none !important;
+            box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .nav-item:focus,
+        .nav-item:active,
+        .nav-item:focus-visible {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        .nav-item::-moz-focus-inner {
+            border: 0 !important;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: #1e1e2e;
+            --text-dark: #f8f9fa;
+            --light-bg: #121212;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        [data-theme="dark"] body {
+            background-color: var(--dark-bg);
+        }
+
+        /* 顶部区域 */
+        .top-section {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 时钟样式 */
+        .clock-container {
+            margin-bottom: 0px;
+        }
+
+        .time {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: -15px;  /* 增加时间与日期之间的距离 */
+        }
+
+        [data-theme="dark"] .time {
+            color: white;
+        }
+
+        .date {
+            font-size: 1rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+            margin-top: -5px;
+            margin-bottom: 30px;  /* 大大增加年月日与搜索框之间的距离 */
+        }
+        
+        /* 搜索框 */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .search-input {
+            background: rgba(30, 30, 46, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: transparent;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        /* 搜索引擎图标 */
+        .search-engine-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .engine-icon-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        /* 搜索引擎选择器 */
+        .engine-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: table;
+            table-layout: fixed;
+        }
+        
+        [data-theme="dark"] .engine-dropdown {
+            background: rgba(30, 30, 46, 0.9);
+        }
+        
+        [data-theme="dark"] .engine-option span {
+            color: white;
+        }
+        
+        .engine-option {
+            display: table-cell;
+            padding: 8px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+            vertical-align: middle;
+            width: 25%;
+        }
+        
+        .engine-option:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .engine-option img {
+            width: 20px;
+            height: 20px;
+            margin: 0 auto 5px;
+            display: block;
+            border-radius: 3px;
+        }
+        
+        .engine-option span {
+            font-size: 14px;
+            color: black;
+            display: block;
+        }
+        
+        [data-theme="dark"] .engine-option span {
+            color: white;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 分组标题 */
+        .group-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 15px 0 8px;
+            padding-bottom: 3px;
+            color: white;
+        }
+
+        [data-theme="dark"] .group-title {
+            color: white;
+        }
+
+        /* 网格布局 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            padding: 10px 8px;
+            background: transparent;
+            border-radius: 0;
+            transition: all 0.3s;
+            box-shadow: none;
+            cursor: move; /* 显示拖拽手型 */
+        }
+
+        [data-theme="dark"] .nav-item {
+            color: white;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-5px);
+            box-shadow: none;
+            background: transparent;
+        }
+
+        [data-theme="dark"] .nav-item:hover {
+            box-shadow: none;
+            background: transparent;
+        }
+
+        /* 拖拽样式 */
+        .nav-item.dragging {
+            opacity: 0.5;
+            background: rgba(67, 97, 238, 0.3);
+        }
+
+        .nav-item.drag-over {
+            border: 2px dashed #4361ee;
+        }
+
+        /* 隐藏拖拽时的焦点轮廓 - 更全面的样式 */
+        .nav-item:focus,
+        .nav-item:active,
+        .nav-item::-moz-focus-inner {
+            outline: none !important;
+            outline-offset: 0 !important;
+            border: 0 !important;
+        }
+
+        /* 针对拖拽元素的特殊处理 */
+        .nav-item[draggable="true"] {
+            -webkit-user-drag: element;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 确保在拖拽过程中不显示任何轮廓 */
+        .nav-item.dragging:focus,
+        .nav-item.drag-over:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .nav-icon {
+            width: 34px;
+            height: 34px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .nav-name {
+            font-size: 13px;
+            text-align: center;
+            word-break: break-word;
+            max-width: 90px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 500;
+        }
+
+        /* 添加按钮 */
+        .add-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 8px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: auto;
+            opacity: 0.85; /* 稍微提高透明度 */
+        }
+
+        [data-theme="dark"] .add-btn {
+            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+            opacity: 0.85; /* 稍微提高透明度 */
+        }
+        
+        [data-theme="dark"] .add-icon {
+            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+        }
+
+        .add-btn:hover {
+            background: rgba(67, 97, 238, 0.1);
+            transform: none;
+            opacity: 1; /* 悬停时恢复不透明度 */
+        }
+
+        [data-theme="dark"] .add-btn:hover {
+            background: rgba(76, 201, 240, 0.1);
+            opacity: 1; /* 悬停时恢复不透明度 */
+        }
+
+        .add-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+        }
+
+        /* 添加网站名称样式 */
+        .add-btn .nav-name {
+            font-size: 13px;
+            text-align: center;
+            word-break: break-word;
+            max-width: 90px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+        }
+
+        /* 底部控制 */
+        .bottom-controls {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .control-btn {
+            background: rgba(30, 30, 46, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] .control-btn:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 模态框 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        /* 模态框内文字颜色 */
+        .modal-content {
+            color: black;
+        }
+        
+        [data-theme="dark"] .modal-content {
+            color: white;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        [data-theme="dark"] .modal-content {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .modal-header {
+            border-bottom: 1px solid #495057;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: black;
+        }
+        
+        [data-theme="dark"] .modal-title {
+            color: white;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #9ca3af;
+        }
+
+        .modal-close:hover {
+            color: #6b7280;
+        }
+
+        [data-theme="dark"] .modal-close:hover {
+            color: #d1d5db;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        [data-theme="dark"] .modal-footer {
+            border-top: 1px solid #495057;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            color: black;
+        }
+        
+        [data-theme="dark"] .btn {
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #bb2d3b;
+        }
+
+        /* 刷新图标按钮样式 */
+        #refreshIconBtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #refreshIconBtn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+            color: black;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: white;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: var(--card-bg);
+            color: black;
+        }
+
+
+
+        [data-theme="dark"] .form-control {
+            border: 1px solid #495057;
+            color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--card-bg);
+            color: black;
+            box-sizing: border-box;
+        }
+
+        [data-theme="dark"] .form-select {
+            border: 1px solid #495057;
+            color: white;
+        }
+
+        /* 响应式设计 - 专为PC端优化 */
+        @media (max-width: 1200px) {
+            .nav-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+                gap: 6px;
+            }
+            
+            .nav-item {
+                padding: 6px 4px;
+            }
+            
+            .nav-icon {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .nav-name {
+                font-size: 11px;
+                max-width: 70px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .nav-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 10px;
+            }
+            
+            .nav-item {
+                padding: 8px 6px;
+            }
+            
+            .nav-icon {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .nav-name {
+                font-size: 12px;
+                max-width: 90px;
+            }
+            
+            .add-btn {
+                padding: 8px 6px;
+            }
+            
+            .add-icon {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部区域 -->
+    <div class="top-section">
+        <!-- 时钟显示 -->
+        <div class="clock-container">
+            <div class="time" id="currentTime"></div>
+            <div class="date" id="currentDate"></div>
+        </div>
+        
+        <!-- 搜索框 -->
+        <div class="search-container">
+            <div class="search-engine-icon" onclick="toggleEngineDropdown()" id="currentEngineDisplay">
+                <img src="https://www.baidu.com/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
+            </div>
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索或输入网址..." onkeypress="if(event.key==='Enter')performSearch()">
+            <button class="search-btn" onclick="performSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+            <!-- 搜索引擎选择器 -->
+            <div class="engine-dropdown" id="engineDropdown" style="display: none;">
+                <div class="engine-option" data-engine="baidu" onclick="selectEngine('baidu')">
+                    <img src="https://www.baidu.com/favicon.ico" alt="百度">
+                    <span>百度</span>
+                </div>
+                <div class="engine-option" data-engine="google" onclick="selectEngine('google')">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    <span>Google</span>
+                </div>
+                <div class="engine-option" data-engine="bing" onclick="selectEngine('bing')">
+                    <img src="https://www.bing.com/favicon.ico" alt="必应">
+                    <span>必应</span>
+                </div>
+                <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine('duckduckgo')">
+                    <img src="https://duckduckgo.com/favicon.ico" alt="DuckDuckGo">
+                    <span>DuckDuckGo</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置按钮 -->
+        <button class="control-btn" style="position: fixed; top: 20px; right: 20px; z-index: 1000;" onclick="openSettingsModal()">
+            <i class="fas fa-cog"></i> 设置
+        </button>
+    </div>
+    
+    <!-- 主要内容区域 -->
+    <div class="main-content">
+        <div id="groupsContainer">
+            <!-- 分组将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 底部控制 -->
+    <div class="bottom-controls">
+        <button class="control-btn" onclick="openAddGroupModal()">
+            <i class="fas fa-folder-plus"></i> 添加分组
+        </button>
+    </div>
+    
+    <!-- 背景切换按钮 -->
+    <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <button class="control-btn" onclick="prevBackground()" style="padding: 8px 12px;">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button class="control-btn" onclick="changeBackground()" style="padding: 8px 12px;">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+        <button class="control-btn" onclick="nextBackground()" style="padding: 8px 12px;">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <!-- 壁纸源切换按钮 -->
+        <button class="control-btn" onclick="toggleWallpaperSource()" style="padding: 8px 12px;">
+            <i class="fas fa-image"></i>
+        </button>
+    </div>
+    
+    <!-- 添加网站模态框 -->
+    <div class="modal" id="addWebsiteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">添加网站</h5>
+                <button class="modal-close" onclick="closeModal('addWebsiteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">网站名称</label>
+                    <input type="text" class="form-control" id="websiteName" placeholder="请输入网站名称">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">网站地址</label>
+                    <input type="url" class="form-control" id="websiteUrl" placeholder="https://example.com">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addWebsiteModal')">取消</button>
+                <button type="button" class="btn btn-primary" onclick="addWebsite()">添加</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑网站模态框 -->
+    <div class="modal" id="editWebsiteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">编辑网站</h5>
+                <button class="modal-close" onclick="closeModal('editWebsiteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">网站名称</label>
+                    <input type="text" class="form-control" id="editName">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">网站地址</label>
+                    <input type="url" class="form-control" id="editUrl">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">图标地址 (可选)</label>
+                    <input type="url" class="form-control" id="editIcon">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">分组</label>
+                    <select class="form-select" id="editGroup"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="refreshWebsiteIcon()" id="refreshIconBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新图标
+                </button>
+                <button type="button" class="btn btn-danger" onclick="deleteWebsite()">删除</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editWebsiteModal')">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加分组模态框 -->
+    <div class="modal" id="addGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">添加分组</h5>
+                <button class="modal-close" onclick="closeModal('addGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">分组名称</label>
+                    <input type="text" class="form-control" id="groupName" placeholder="请输入分组名称">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addGroupModal')">取消</button>
+                <button type="button" class="btn btn-primary" onclick="addGroup()">添加</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑分组模态框 -->
+    <div class="modal" id="editGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">编辑分组</h5>
+                <button class="modal-close" onclick="closeModal('editGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">分组名称</label>
+                    <input type="text" class="form-control" id="editGroupName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteGroup()">删除分组</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editGroupModal')">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveGroupEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 编辑分组名称模态框 -->
+    <div class="modal" id="editGroupNameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">修改分组名称</h5>
+                <button class="modal-close" onclick="closeModal('editGroupNameModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">分组名称</label>
+                    <input type="text" class="form-control" id="newGroupName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editGroupNameModal')">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveGroupNameEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 设置模态框 -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">设置</h5>
+                <button class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">主题设置</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>浅色</span>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="darkThemeToggle" onchange="toggleTheme()" style="width: 50px; height: 25px;">
+                        </div>
+                        <span>深色</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">数据管理</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="backupToGist()">备份数据</button>
+                        <button class="btn btn-secondary" onclick="restoreFromGist()">恢复数据</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('settingsModal')">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <!-- JavaScript -->
+    <script>
+        // 初始数据
+        let websiteGroups = [
+            {
+                id: 'group1',
+                name: '常用网站',
+                websites: [
+                    { id: 'site1', name: 'Google', url: 'https://www.google.com', icon: 'https://www.google.com/favicon.ico' },
+                    { id: 'site2', name: 'GitHub', url: 'https://github.com', icon: 'https://github.com/favicon.ico' },
+                    { id: 'site3', name: 'Notion', url: 'https://www.notion.so', icon: 'https://www.notion.so/favicon.ico' }
+                ]
+            },
+            {
+                id: 'group2',
+                name: '开发工具',
+                websites: [
+                    { id: 'site4', name: 'MDN', url: 'https://developer.mozilla.org', icon: 'https://developer.mozilla.org/favicon.ico' },
+                    { id: 'site5', name: 'Stack Overflow', url: 'https://stackoverflow.com', icon: 'https://stackoverflow.com/favicon.ico' }
+                ]
+            }
+        ];
+
+        // 初始化网站位置信息
+        function initWebsitePositions() {
+            websiteGroups.forEach(group => {
+                group.websites.forEach((site, index) => {
+                    if (!site.position) {
+                        site.position = index;
+                    }
+                });
+                // 按位置排序
+                group.websites.sort((a, b) => (a.position || 0) - (b.position || 0));
+            });
+        }
+
+        let currentEditGroup = null;
+        let currentEditIndex = -1;
+        let currentSearchEngine = 'baidu';
+        
+        // 搜索引擎配置
+        const searchEngines = {
+            baidu: { name: '百度', url: 'https://www.baidu.com/s?wd=', favicon: 'https://www.baidu.com/favicon.ico' },
+            google: { name: 'Google', url: 'https://www.google.com/search?q=', favicon: 'https://www.google.com/favicon.ico' },
+            bing: { name: '必应', url: 'https://www.bing.com/search?q=', favicon: 'https://www.bing.com/favicon.ico' },
+            duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=', favicon: 'https://duckduckgo.com/favicon.ico' }
+        };
+        
+        // 壁纸配置（支持多种来源）
+        let bingWallpapers = [];
+        let pexelsWallpapers = [];
+        let pixabayWallpapers = [];
+        let unsplashWallpapers = [];
+        let currentWallpaperIndex = 0;
+        
+        // 壁纸源配置
+        const wallpaperSources = ['pexels', 'pixabay', 'unsplash', 'bing'];
+        let currentWallpaperSource = 'pexels'; // 默认使用Pexels壁纸
+        
+        // 切换壁纸源
+        function toggleWallpaperSource() {
+            // 获取当前源的索引
+            const currentIndex = wallpaperSources.indexOf(currentWallpaperSource);
+            // 切换到下一个源
+            const nextIndex = (currentIndex + 1) % wallpaperSources.length;
+            currentWallpaperSource = wallpaperSources[nextIndex];
+            
+            // 在页面底部显示当前壁纸源，而不需要弹出提示框
+            showCurrentWallpaperSource();
+            
+            // 重新加载当前源的壁纸
+            loadCurrentWallpaperSource();
+        }
+        
+        // 在页面底部显示当前壁纸源
+        function showCurrentWallpaperSource() {
+            // 创建或更新底部显示元素
+            let sourceDisplay = document.getElementById('wallpaperSourceDisplay');
+            if (!sourceDisplay) {
+                sourceDisplay = document.createElement('div');
+                sourceDisplay.id = 'wallpaperSourceDisplay';
+                sourceDisplay.style.position = 'fixed';
+                sourceDisplay.style.bottom = '20px';
+                sourceDisplay.style.left = '20px';
+                sourceDisplay.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                sourceDisplay.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+                sourceDisplay.style.color = 'white';
+                sourceDisplay.style.borderRadius = '50px';
+                sourceDisplay.style.padding = '10px 20px';
+                sourceDisplay.style.fontSize = '14px';
+                sourceDisplay.style.fontWeight = '500';
+                sourceDisplay.style.zIndex = '1000';
+                sourceDisplay.style.backdropFilter = 'blur(10px)';
+                document.body.appendChild(sourceDisplay);
+            }
+            
+            // 更新显示内容
+            const sourceNames = {
+                'pexels': 'Pexels',
+                'pixabay': 'Pixabay',
+                'unsplash': 'Unsplash',
+                'bing': 'Bing'
+            };
+            
+            sourceDisplay.textContent = `壁纸源: ${sourceNames[currentWallpaperSource] || currentWallpaperSource}`;
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                if (sourceDisplay.parentNode) {
+                    sourceDisplay.parentNode.removeChild(sourceDisplay);
+                }
+            }, 3000);
+        }
+        
+        // 加载当前壁纸源
+        async function loadCurrentWallpaperSource() {
+            switch(currentWallpaperSource) {
+                case 'bing':
+                    return await fetchBingWallpapers();
+                case 'pexels':
+                    return await fetchPexelsWallpapers();
+                case 'pixabay':
+                    return await fetchPixabayWallpapers();
+                case 'unsplash':
+                    return await fetchUnsplashWallpapers();
+                default:
+                    return await fetchBingWallpapers();
+            }
+        }
+        
+
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWebsites();
+            initWebsitePositions(); // 初始化网站位置
+            renderGroups();
+            updateThemeIcon();
+            // 初始化时钟
+            try {
+                initClock();
+            } catch (error) {
+                console.error('时钟初始化失败:', error);
+            }
+            
+
+            
+            // 设置初始背景
+            const savedBackground = localStorage.getItem('backgroundImage');
+            const savedIndex = localStorage.getItem('backgroundIndex');
+            if (savedBackground && savedIndex) {
+                document.body.style.backgroundImage = `url('${savedBackground}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundRepeat = 'no-repeat';
+                document.body.style.backgroundAttachment = 'fixed';
+                currentWallpaperIndex = parseInt(savedIndex);
+            } else {
+                // 如果没有保存的背景，直接使用默认壁纸
+                const defaultWallpaper = { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' };
+                setBackground(defaultWallpaper);
+                
+                // 同时在后台获取Bing壁纸
+                fetchBingWallpapers().then(wallpapers => {
+                    if (wallpapers && wallpapers.length > 0) {
+                        // 获取到壁纸后，设置第一张为当前壁纸
+                        currentWallpaperIndex = 0;
+                        setBackground(wallpapers[0]);
+                    }
+                }).catch(error => {
+                    console.error('后台获取壁纸失败:', error);
+                });
+            }
+        });
+
+        // 从本地存储加载数据
+        function loadWebsites() {
+            const saved = localStorage.getItem('websiteGroups');
+            if (saved) {
+                websiteGroups = JSON.parse(saved);
+            }
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkThemeToggle').checked = true;
+            }
+        }
+
+        // 保存数据到本地存储
+        function saveWebsites() {
+            localStorage.setItem('websiteGroups', JSON.stringify(websiteGroups));
+        }
+
+        // 拖拽相关变量
+        let dragSrcElement = null;
+
+        // 拖拽开始事件
+        function handleDragStart(e) {
+            // 不再阻止默认行为，以免影响拖拽功能
+            // e.preventDefault();  // 移除这行代码
+            // 阻止事件冒泡
+            e.stopPropagation();
+            
+            dragSrcElement = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            this.classList.add('dragging');
+            
+            // 确保元素失去焦点以避免显示轮廓
+            this.blur();
+        }
+
+        // 拖拽过程中阻止默认行为
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            
+            // 不再强制失去焦点，以免影响拖拽功能
+            // 确保目标元素不获得焦点
+            // if (e.target && e.target.classList && e.target.classList.contains('nav-item')) {
+            //     e.target.blur();
+            // }
+            
+            return false;
+        }
+
+        // 拖拽进入元素
+        function handleDragEnter(e) {
+            // 确保不阻止默认行为
+            // e.preventDefault(); // 不要阻止默认行为
+            this.classList.add('drag-over');
+        }
+
+        // 拖拽离开元素
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        // 拖拽放置事件
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            // 移除目标元素的drag-over类
+            this.classList.remove('drag-over');
+
+            if (dragSrcElement != this) {
+                // 获取源和目标元素的信息
+                const srcGroupId = dragSrcElement.dataset.groupId;
+                const srcIndex = parseInt(dragSrcElement.dataset.index);
+                const targetGroupId = this.dataset.groupId;
+                const targetIndex = parseInt(this.dataset.index);
+
+                // 如果在同一分组内移动
+                if (srcGroupId === targetGroupId) {
+                    const group = websiteGroups.find(g => g.id === srcGroupId);
+                    if (group) {
+                        // 交换位置
+                        const temp = group.websites[srcIndex];
+                        group.websites[srcIndex] = group.websites[targetIndex];
+                        group.websites[targetIndex] = temp;
+                        
+                        // 更新位置信息
+                        group.websites.forEach((site, index) => {
+                            site.position = index;
+                        });
+                        
+                        saveWebsites();
+                        renderGroup(group);
+                    }
+                }
+                // 如果在不同分组间移动
+                else {
+                    const srcGroup = websiteGroups.find(g => g.id === srcGroupId);
+                    const targetGroup = websiteGroups.find(g => g.id === targetGroupId);
+                    if (srcGroup && targetGroup) {
+                        // 从源分组移除
+                        const [movedSite] = srcGroup.websites.splice(srcIndex, 1);
+                        // 添加到目标分组
+                        targetGroup.websites.splice(targetIndex, 0, movedSite);
+                        
+                        // 更新位置信息
+                        srcGroup.websites.forEach((site, index) => {
+                            site.position = index;
+                        });
+                        targetGroup.websites.forEach((site, index) => {
+                            site.position = index;
+                        });
+                        
+                        saveWebsites();
+                        renderGroups(); // 重新渲染所有分组
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // 拖拽结束事件
+        function handleDragEnd(e) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('dragging', 'drag-over');
+            });
+        }
+
+        // 渲染所有分组（完整渲染函数）
+        function renderGroups() {
+            const container = document.getElementById('groupsContainer');
+            container.innerHTML = '';
+
+            websiteGroups.forEach((group, groupIndex) => {
+                // 分组标题
+                const title = document.createElement('h2');
+                title.className = 'group-title';
+                title.textContent = group.name;
+                title.dataset.groupId = group.id;
+                
+                // 添加右键编辑分组名称功能
+                title.oncontextmenu = function(e) {
+                    e.preventDefault();
+                    openEditGroupNameModal(group.id);
+                };
+                
+                container.appendChild(title);
+
+                // 网站网格
+                const grid = document.createElement('div');
+                grid.className = 'nav-grid';
+
+                // 网站项
+                group.websites.forEach((site, index) => {
+                    const item = document.createElement('a');
+                    item.href = site.url;
+                    item.className = 'nav-item';
+                    item.target = '_blank';
+                    item.dataset.groupId = group.id;
+                    item.dataset.index = index;
+                    item.draggable = true; // 启用拖拽
+                    
+                    // 添加防止焦点轮廓的属性（但不影响拖拽功能）
+                    item.setAttribute('hidefocus', 'true');
+                    item.style.outline = 'none';
+                    item.style.webkitTapHighlightColor = 'transparent';
+
+                    // 统一使用img标签显示图标
+                    item.innerHTML = `
+                        <img src="${site.icon}" alt="${site.name}" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">${site.name}</div>
+                    `;
+
+                    // 添加右键编辑功能
+                    item.oncontextmenu = function(e) {
+                        e.preventDefault();
+                        openEditWebsiteModal(group.id, index);
+                    };
+
+                    // 添加拖拽事件
+                    item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('dragover', handleDragOver);
+                    item.addEventListener('dragenter', handleDragEnter);
+                    item.addEventListener('dragleave', handleDragLeave);
+                    item.addEventListener('drop', handleDrop);
+                    item.addEventListener('dragend', handleDragEnd);
+
+                    grid.appendChild(item);
+                });
+
+                // 每个分组都显示添加网站按钮（恢复之前的功能）
+                const addButton = document.createElement('button');
+                addButton.className = 'add-btn';
+                addButton.innerHTML = '<i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div>';
+                addButton.onclick = () => openAddWebsiteModal(group.id);
+                grid.appendChild(addButton);
+
+                container.appendChild(grid);
+            });
+        }
+
+        // 渲染单个分组（优化性能，只渲染指定分组）
+        function renderGroup(group) {
+            // 查找分组容器
+            const container = document.getElementById('groupsContainer');
+            
+            // 查找现有的分组元素
+            let groupTitle = null;
+            let groupGrid = null;
+            
+            // 遍历子元素查找对应的分组
+            for (let i = 0; i < container.children.length; i++) {
+                const child = container.children[i];
+                if (child.tagName === 'H2' && child.dataset && child.dataset.groupId === group.id) {
+                    groupTitle = child;
+                    groupGrid = container.children[i + 1];
+                    break;
+                }
+            }
+            
+            // 如果找不到现有分组元素，则重新渲染整个页面
+            if (!groupTitle || !groupGrid) {
+                renderGroups();
+                return;
+            }
+            
+            // 更新分组标题
+            groupTitle.textContent = group.name;
+            
+            // 清空现有的网站项
+            groupGrid.innerHTML = '';
+            
+            // 重新添加网站项
+            group.websites.forEach((site, index) => {
+                const item = document.createElement('a');
+                item.href = site.url;
+                item.className = 'nav-item';
+                item.target = '_blank';
+                item.dataset.groupId = group.id;
+                item.dataset.index = index;
+                item.draggable = true; // 启用拖拽
+                
+                // 添加防止焦点轮廓的属性（但不影响拖拽功能）
+                item.setAttribute('hidefocus', 'true');
+                item.style.outline = 'none';
+                item.style.webkitTapHighlightColor = 'transparent';
+
+                // 统一使用img标签显示图标
+                item.innerHTML = `
+                    <img src="${site.icon}" alt="${site.name}" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    <div class="nav-name">${site.name}</div>
+                `;
+
+                // 添加右键编辑功能
+                item.oncontextmenu = function(e) {
+                    e.preventDefault();
+                    openEditWebsiteModal(group.id, index);
+                };
+
+                // 添加拖拽事件
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+
+                groupGrid.appendChild(item);
+            });
+
+            // 添加该分组的添加网站按钮
+            const addButton = document.createElement('button');
+            addButton.className = 'add-btn';
+            addButton.innerHTML = '<i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div>';
+            addButton.onclick = () => openAddWebsiteModal(group.id);
+            groupGrid.appendChild(addButton);
+        }
+
+        // 打开模态框
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        // 关闭模态框
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // 打开添加网站模态框
+        function openAddWebsiteModal(groupId) {
+            currentEditGroup = groupId;
+            document.getElementById('websiteUrl').value = '';
+            document.getElementById('websiteName').value = '';
+            openModal('addWebsiteModal');
+        }
+
+        // 打开编辑网站模态框
+        function openEditWebsiteModal(groupId, index) {
+            currentEditGroup = groupId;
+            currentEditIndex = index;
+            const group = websiteGroups.find(g => g.id === groupId);
+            if (!group) return;
+            const site = group.websites[index];
+            
+            document.getElementById('editName').value = site.name;
+            document.getElementById('editUrl').value = site.url;
+            document.getElementById('editIcon').value = site.icon || '';
+
+            // 填充分组选项
+            const groupSelect = document.getElementById('editGroup');
+            groupSelect.innerHTML = '';
+            websiteGroups.forEach(g => {
+                const option = document.createElement('option');
+                option.value = g.id;
+                option.textContent = g.name;
+                if (g.id === groupId) {
+                    option.selected = true;
+                }
+                groupSelect.appendChild(option);
+            });
+
+            openModal('editWebsiteModal');
+        }
+
+        // 打开添加分组模态框
+        function openAddGroupModal() {
+            document.getElementById('groupName').value = '';
+            openModal('addGroupModal');
+        }
+
+        // 打开编辑分组模态框
+        function openEditGroupModal(groupIndex) {
+            const group = websiteGroups[groupIndex];
+            currentEditGroup = groupIndex;
+            document.getElementById('editGroupName').value = group.name;
+            openModal('editGroupModal');
+        }
+        
+        // 打开编辑分组名称模态框
+        function openEditGroupNameModal(groupId) {
+            const group = websiteGroups.find(g => g.id === groupId);
+            if (!group) return;
+            currentEditGroup = groupId;
+            document.getElementById('newGroupName').value = group.name;
+            openModal('editGroupNameModal');
+        }
+        
+        // 保存分组名称编辑
+        function saveGroupNameEdit() {
+            const newName = document.getElementById('newGroupName').value.trim();
+            if (!newName) {
+                alert('请输入分组名称');
+                return;
+            }
+            
+            const group = websiteGroups.find(g => g.id === currentEditGroup);
+            if (group) {
+                group.name = newName;
+                saveWebsites();
+                renderGroups();
+            }
+            
+            closeModal('editGroupNameModal');
+        }
+
+        // 打开设置模态框
+        function openSettingsModal() {
+            openModal('settingsModal');
+        }
+
+
+        // 添加网站
+        async function addWebsite() {
+            const url = document.getElementById('websiteUrl').value.trim();
+            const customName = document.getElementById('websiteName').value.trim();
+            
+            if (!url) {
+                alert('请输入网站地址');
+                return;
+            }
+
+            if (!currentEditGroup) {
+                alert('请选择分组');
+                return;
+            }
+
+            try {
+                // 首先使用用户输入的名称或域名作为临时名称
+                let tempName = '';
+                
+                // 如果用户输入了自定义名称，则使用自定义名称
+                if (customName) {
+                    tempName = customName;
+                } else {
+                    // 否则使用域名作为临时名称
+                    try {
+                        const u = new URL(url);
+                        const domain = u.hostname.replace('www.', '');
+                        tempName = domain.charAt(0).toUpperCase() + domain.slice(1);
+                    } catch (e) {
+                        // 如果URL解析失败，使用完整URL作为名称
+                        tempName = url;
+                    }
+                }
+                
+                // 获取网站信息（使用简化逻辑以提升响应速度）
+                const siteInfo = await getWebsiteInfoFast(url, tempName);
+                
+                // 检查是否已存在
+                let exists = false;
+                websiteGroups.forEach(group => {
+                    if (group.websites.some(site => site.url === siteInfo.url)) {
+                        exists = true;
+                    }
+                });
+
+                if (exists) {
+                    alert('该网站已存在');
+                    return;
+                }
+
+                // 添加到指定分组
+                const group = websiteGroups.find(g => g.id === currentEditGroup);
+                if (group) {
+                    group.websites.push(siteInfo);
+                    saveWebsites();
+                    // 只重新渲染当前分组，而不是整个页面
+                    renderGroup(group);
+                    
+                    // 后台获取网站标题并更新显示
+                    updateWebsiteTitleInBackground(siteInfo, group);
+                }
+
+                closeModal('addWebsiteModal');
+            } catch (error) {
+                alert('添加失败: ' + error.message);
+            }
+        }
+        
+        // 后台获取网站标题并更新显示
+        async function updateWebsiteTitleInBackground(siteInfo, group) {
+            try {
+                // 在后台获取网站标题
+                const title = await getWebsiteTitle(siteInfo.url);
+                
+                if (title && title !== siteInfo.name) {
+                    // 更新网站名称
+                    siteInfo.name = title;
+                    saveWebsites();
+                    // 重新渲染分组以更新显示
+                    renderGroup(group);
+                    console.log('网站标题已更新:', title);
+                }
+            } catch (error) {
+                console.warn('后台获取网站标题失败:', error);
+            }
+        }
+        
+        // 图标缓存
+        const iconCache = new Map();
+        const iconCacheTimeout = 5 * 60 * 1000; // 5分钟缓存
+        
+        // 图标缓存清理函数
+        function cleanupIconCache() {
+            const now = Date.now();
+            for (const [key, value] of iconCache.entries()) {
+                if (now - value.timestamp > iconCacheTimeout) {
+                    iconCache.delete(key);
+                }
+            }
+        }
+        
+        // 定期清理缓存（每10分钟）
+        setInterval(cleanupIconCache, 10 * 60 * 1000);
+        
+        // 快速获取网站信息（优化版本，优先获取官方图标）
+        async function getWebsiteInfoFast(url, finalName) {
+            const u = new URL(url);
+            
+            // 总是使用传入的最终名称
+            const siteName = finalName;
+            
+            const siteId = 'site' + Date.now();
+            
+            // 检查缓存
+            const cacheKey = u.hostname;
+            const cachedResult = iconCache.get(cacheKey);
+            if (cachedResult && (Date.now() - cachedResult.timestamp < iconCacheTimeout)) {
+                return {
+                    id: siteId,
+                    name: siteName,
+                    url: url,
+                    icon: cachedResult.icon,
+                    isSvg: cachedResult.isSvg || false
+                };
+            }
+            
+            // 图标获取策略（按优先级排序）：
+            // 1. 首先尝试获取网站官方favicon
+            const officialIcon = `${u.origin}/favicon.ico`;
+            
+            // 2. 使用Google S2 Icons（速度快，覆盖范围广）
+            const googleS2Icon = `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=64`;
+            
+            // 3. 使用IconArchive图标库
+            const iconArchiveIcon = `https://iconarchive.com/download/i130859/icons8/windows-11/${u.hostname.replace(/\./g, '_')}.ico`;
+            
+            // 4. 如果以上都不可用，使用默认图标
+            const defaultIcon = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg';
+            
+            // 按优先级检查图标可用性
+            let bestIcon = defaultIcon;
+            let isSvg = false;
+            
+            try {
+                // 首先检查官方图标
+                if (await isIconAvailable(officialIcon)) {
+                    bestIcon = officialIcon;
+                } 
+                // 如果官方图标不可用，尝试Google S2 Icons
+                else if (await isIconAvailable(googleS2Icon)) {
+                    bestIcon = googleS2Icon;
+                }
+                // 如果Google S2 Icons不可用，尝试IconArchive图标库
+                else if (await isIconAvailable(iconArchiveIcon)) {
+                    bestIcon = iconArchiveIcon;
+                }
+                
+                // 缓存结果
+                iconCache.set(cacheKey, {
+                    icon: bestIcon,
+                    isSvg: isSvg,
+                    timestamp: Date.now()
+                });
+            } catch (error) {
+                console.warn('图标获取失败，使用默认图标:', error);
+                bestIcon = defaultIcon;
+            }
+            
+            return {
+                id: siteId,
+                name: siteName,
+                url: url,
+                icon: bestIcon,
+                isSvg: isSvg
+            };
+        }
+        
+        // 获取网站标题
+        async function getWebsiteTitle(url) {
+            return new Promise((resolve, reject) => {
+                // 设置超时时间（缩短到2秒以提升响应速度）
+                const timeout = setTimeout(() => {
+                    reject(new Error('获取网站标题超时'));
+                }, 2000);
+                
+                (async () => {
+                    try {
+                        // 优先使用corsproxy.io代理（最快最稳定）
+                        try {
+                            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+                            const response = await fetch(proxyUrl);
+                            
+                            if (response.ok) {
+                                const html = await response.text();
+                                const title = extractTitleFromHtml(html);
+                                if (title) {
+                                    clearTimeout(timeout);
+                                    resolve(title);
+                                    return;
+                                }
+                            }
+                        } catch (error) {
+                            console.warn('代理获取标题失败:', error);
+                        }
+                        
+                        // 如果代理方法失败，返回null
+                        clearTimeout(timeout);
+                        resolve(null);
+                    } catch (error) {
+                        clearTimeout(timeout);
+                        console.warn('获取网站标题失败:', error);
+                        resolve(null);
+                    }
+                })();
+            });
+        }
+        
+        // 从HTML中提取标题
+        function extractTitleFromHtml(html) {
+            if (!html) return null;
+            
+            // 使用正则表达式提取标题
+            const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+            
+            if (titleMatch && titleMatch[1]) {
+                // 清理标题，去除多余空格和换行符
+                let title = titleMatch[1].trim();
+                title = title.replace(/\s+/g, ' ');
+                
+                // 如果标题过长，截取前30个字符并添加省略号
+                if (title.length > 30) {
+                    title = title.substring(0, 30) + '...';
+                }
+                
+                // 过滤掉一些无意义的标题
+                if (title && title.length > 1 && !title.includes('404') && !title.includes('Error')) {
+                    return title;
+                }
+            }
+            
+            return null;
+        }
+        
+        // 检查图标是否可用（带超时机制和更严格的验证）
+        async function isIconAvailable(iconUrl) {
+            // 对于明显无效的URL，直接返回false
+            if (!iconUrl || iconUrl.length < 5) {
+                return false;
+            }
+            
+            return new Promise((resolve) => {
+                // 设置较短的超时时间（1秒）
+                const timeout = setTimeout(() => {
+                    resolve(false);
+                }, 1000);
+                
+                const img = new Image();
+                img.onload = () => {
+                    clearTimeout(timeout);
+                    // 更严格的图片有效性检查
+                    if (img.width >= 16 && img.height >= 16) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                };
+                img.onerror = () => {
+                    clearTimeout(timeout);
+                    resolve(false);
+                };
+                // 添加额外的错误处理
+                img.onabort = () => {
+                    clearTimeout(timeout);
+                    resolve(false);
+                };
+                
+                // 设置图片属性以提高加载效率
+                img.crossOrigin = "anonymous";
+                img.referrerPolicy = "no-referrer";
+                img.src = iconUrl;
+            });
+        }
+        
+        // 保存网站编辑
+        function saveEdit() {
+            if (currentEditIndex === -1 || !currentEditGroup) return;
+
+            const name = document.getElementById('editName').value.trim();
+            const url = document.getElementById('editUrl').value.trim();
+            const icon = document.getElementById('editIcon').value.trim();
+            const targetGroupId = document.getElementById('editGroup').value;
+
+            if (!name || !url) {
+                alert('请填写完整信息');
+                return;
+            }
+
+            try {
+                // 验证URL格式
+                new URL(url);
+                if (icon) {
+                    new URL(icon);
+                }
+
+                // 找到源分组
+                const sourceGroup = websiteGroups.find(g => g.id === currentEditGroup);
+                if (!sourceGroup) return;
+
+                // 获取网站信息
+                let site;
+                // 如果分组改变了，需要先移除再添加
+                if (targetGroupId !== currentEditGroup) {
+                    site = sourceGroup.websites[currentEditIndex];
+                    // 从源分组移除
+                    sourceGroup.websites.splice(currentEditIndex, 1);
+                } else {
+                    // 如果在同一分组内，直接更新
+                    site = sourceGroup.websites[currentEditIndex];
+                }
+
+                // 更新网站信息
+                site.name = name;
+                site.url = url;
+                site.icon = icon || site.icon;
+
+                // 如果分组改变了，添加到目标分组
+                if (targetGroupId !== currentEditGroup) {
+                    const targetGroup = websiteGroups.find(g => g.id === targetGroupId);
+                    if (targetGroup) {
+                        // 为移动的网站生成新的ID以避免冲突
+                        const movedSite = {...site, id: 'site' + Date.now()};
+                        targetGroup.websites.push(movedSite);
+                    }
+                }
+
+                saveWebsites();
+                renderGroups();
+                closeModal('editWebsiteModal');
+            } catch (e) {
+                alert('URL格式不正确');
+            }
+        }
+
+        // 删除网站
+        function deleteWebsite() {
+            if (currentEditIndex === -1 || !currentEditGroup) return;
+            const sourceGroup = websiteGroups.find(g => g.id === currentEditGroup);
+            if (!sourceGroup) return;
+            const siteName = sourceGroup.websites[currentEditIndex].name;
+            if (confirm(`确定要删除网站 "${siteName}" 吗？`)) {
+                sourceGroup.websites.splice(currentEditIndex, 1);
+                saveWebsites();
+                renderGroups();
+                closeModal('editWebsiteModal');
+            }
+        }
+
+        // 刷新网站图标
+        async function refreshWebsiteIcon() {
+            if (currentEditIndex === -1 || !currentEditGroup) return;
+
+            const sourceGroup = websiteGroups.find(g => g.id === currentEditGroup);
+            if (!sourceGroup) return;
+
+            const site = sourceGroup.websites[currentEditIndex];
+            if (!site) return;
+
+            // 显示刷新状态
+            const refreshBtn = document.getElementById('refreshIconBtn');
+            const originalText = refreshBtn.innerHTML;
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+            refreshBtn.disabled = true;
+
+            try {
+                // 使用与添加网站时相同的逻辑获取图标
+                const u = new URL(site.url);
+                const siteName = site.name;
+                
+                // 图标获取策略（按优先级排序）：
+                // 1. 首先尝试获取网站官方favicon
+                const officialIcon = `${u.origin}/favicon.ico`;
+                
+                // 2. 使用Google S2 Icons（速度快，覆盖范围广）
+                const googleS2Icon = `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=64`;
+                
+                // 3. 使用IconArchive图标库
+                const iconArchiveIcon = `https://iconarchive.com/download/i130859/icons8/windows-11/${u.hostname.replace(/\./g, '_')}.ico`;
+                
+                // 4. 如果以上都不可用，使用默认图标
+                const defaultIcon = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg';
+                
+                // 按优先级检查图标可用性
+                let bestIcon = defaultIcon;
+                
+                // 首先检查官方图标
+                if (await isIconAvailable(officialIcon)) {
+                    bestIcon = officialIcon;
+                } 
+                // 如果官方图标不可用，尝试Google S2 Icons
+                else if (await isIconAvailable(googleS2Icon)) {
+                    bestIcon = googleS2Icon;
+                }
+                // 如果Google S2 Icons不可用，尝试IconArchive图标库
+                else if (await isIconAvailable(iconArchiveIcon)) {
+                    bestIcon = iconArchiveIcon;
+                }
+                
+                // 更新网站图标
+                site.icon = bestIcon;
+                
+                // 清除缓存中的旧图标
+                const cacheKey = u.hostname;
+                if (iconCache.has(cacheKey)) {
+                    iconCache.delete(cacheKey);
+                }
+                
+                // 保存并重新渲染
+                saveWebsites();
+                renderGroups();
+                
+                // 更新编辑模态框中的图标预览
+                document.getElementById('editIcon').value = bestIcon;
+                
+                alert('图标刷新成功！');
+            } catch (error) {
+                console.error('刷新图标失败:', error);
+                alert('图标刷新失败: ' + error.message);
+            } finally {
+                // 恢复按钮状态
+                refreshBtn.innerHTML = originalText;
+                refreshBtn.disabled = false;
+            }
+        }
+
+        // 添加分组
+        function addGroup() {
+            const name = document.getElementById('groupName').value.trim();
+            if (!name) {
+                alert('请输入分组名称');
+                return;
+            }
+            
+            const newGroup = {
+                id: 'group' + Date.now(),
+                name: name,
+                websites: []
+            };
+            
+            websiteGroups.push(newGroup);
+            saveWebsites();
+            renderGroups();
+            closeModal('addGroupModal');
+        }
+
+        // 保存分组编辑
+        function saveGroupEdit() {
+            const newName = document.getElementById('editGroupName').value.trim();
+            if (!newName) {
+                alert('请输入分组名称');
+                return;
+            }
+            websiteGroups[currentEditGroup].name = newName;
+            saveWebsites();
+            renderGroups();
+            closeModal('editGroupModal');
+        }
+
+        // 删除分组
+        function deleteGroup() {
+            if (websiteGroups.length <= 1) {
+                alert('至少需要保留一个分组');
+                return;
+            }
+            const groupName = websiteGroups[currentEditGroup].name;
+            if (confirm(`确定要删除分组 "${groupName}" 吗？此操作将删除该分组下的所有网站。`)) {
+                websiteGroups.splice(currentEditGroup, 1);
+                saveWebsites();
+                renderGroups();
+                closeModal('editGroupModal');
+            }
+        }
+
+        // 执行搜索
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            // 判断是否为网址
+            if (query.includes('.') && !query.includes(' ')) {
+                // 可能是网址
+                let url = query;
+                if (!url.startsWith('http')) {
+                    url = 'https://' + url;
+                }
+                window.open(url, '_blank');
+            } else {
+                // 搜索内容 (使用选定的搜索引擎)
+                const engine = searchEngines[currentSearchEngine];
+                const searchUrl = engine.url + encodeURIComponent(query);
+                window.open(searchUrl, '_blank');
+            }
+        }
+
+        // 切换主题
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // 更新开关状态
+            document.getElementById('darkThemeToggle').checked = newTheme === 'dark';
+            
+            // 更新菜单文本
+            updateThemeIcon();
+        }
+
+        // 更新主题图标和文本
+        function updateThemeIcon() {
+            try {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const themeToggle = document.getElementById('darkThemeToggle');
+                
+                if (!themeToggle) {
+                    console.warn('未找到主题切换元素');
+                    return;
+                }
+                
+                const themeText = themeToggle.nextElementSibling;
+                
+                if (currentTheme === 'dark') {
+                    if (themeText) themeText.textContent = '浅色模式';
+                } else {
+                    if (themeText) themeText.textContent = '深色模式';
+                }
+            } catch (error) {
+                console.error('更新主题图标失败:', error);
+            }
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        }
+        
+        // 获取Bing壁纸数据（使用corsproxy.io代理方案）
+        async function fetchBingWallpapers() {
+            try {
+                // 如果已经有壁纸数据，直接返回
+                if (bingWallpapers.length > 0) {
+                    return bingWallpapers;
+                }
+                
+                console.log('开始获取Bing壁纸数据...');
+                
+                // 直接尝试获取Bing壁纸数据（不使用代理，避免CORS问题）
+                const bingUrls = [
+                    'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN',
+                    'https://www.bing.com/HPImageArchive.aspx?format=js&idx=1&n=1&mkt=zh-CN',
+                    'https://www.bing.com/HPImageArchive.aspx?format=js&idx=2&n=1&mkt=zh-CN'
+                ];
+                
+                // 尝试直接获取壁纸数据
+                let imageData = [];
+                for (let i = 0; i < bingUrls.length; i++) {
+                    try {
+                        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(bingUrls[i])}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            imageData.push(data);
+                        }
+                    } catch (error) {
+                        console.warn(`获取Bing壁纸 ${i} 失败:`, error);
+                    }
+                }
+                
+                // 如果代理方式失败，尝试直接获取
+                if (imageData.length === 0) {
+                    console.log('代理方式失败，尝试直接获取...');
+                    for (let i = 0; i < bingUrls.length; i++) {
+                        try {
+                            // 注意：这可能会因为CORS问题而失败
+                            const response = await fetch(bingUrls[i]);
+                            if (response.ok) {
+                                const data = await response.json();
+                                imageData.push(data);
+                            }
+                        } catch (error) {
+                            console.warn(`直接获取Bing壁纸 ${i} 失败:`, error);
+                        }
+                    }
+                }
+                
+                // 处理API返回的数据
+                bingWallpapers = imageData.map(data => {
+                    if (data.images && data.images.length > 0) {
+                        const image = data.images[0];
+                        // 构造完整的壁纸URL
+                        const imageUrl = 'https://www.bing.com' + image.url;
+                        return { url: imageUrl };
+                    }
+                    return null;
+                }).filter(image => image !== null); // 过滤掉空值
+                
+                // 如果没有获取到壁纸，使用备用壁纸
+                if (bingWallpapers.length === 0) {
+                    console.log('未获取到Bing壁纸，使用备用壁纸');
+                    bingWallpapers = [
+                        { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                        { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                    ];
+                }
+                
+                console.log('最终壁纸列表:', bingWallpapers);
+                return bingWallpapers;
+            } catch (error) {
+                console.error('获取Bing壁纸失败:', error);
+                // 出错时使用备用壁纸
+                bingWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                return bingWallpapers;
+            }
+        }
+        
+        // 获取Pexels壁纸数据
+        async function fetchPexelsWallpapers() {
+            try {
+                // 如果已经有壁纸数据，直接返回
+                if (pexelsWallpapers.length > 0) {
+                    return pexelsWallpapers;
+                }
+                
+                console.log('开始获取Pexels壁纸数据...');
+                
+                // Pexels API需要API密钥，这里使用一些精选的壁纸URL作为示例
+                // 实际使用时需要注册Pexels账户获取API密钥
+                pexelsWallpapers = [
+                    { url: 'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                    { url: 'https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                    { url: 'https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                    { url: 'https://images.pexels.com/photos/2387436/pexels-photo-2387436.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
+                    { url: 'https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }
+                ];
+                
+                console.log('Pexels壁纸列表:', pexelsWallpapers);
+                return pexelsWallpapers;
+            } catch (error) {
+                console.error('获取Pexels壁纸失败:', error);
+                // 出错时使用备用壁纸
+                pexelsWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                return pexelsWallpapers;
+            }
+        }
+        
+        // 获取Pixabay壁纸数据
+        async function fetchPixabayWallpapers() {
+            try {
+                // 如果已经有壁纸数据，直接返回
+                if (pixabayWallpapers.length > 0) {
+                    return pixabayWallpapers;
+                }
+                
+                console.log('开始获取Pixabay壁纸数据...');
+                
+                // Pixabay API需要API密钥，这里使用一些精选的壁纸URL作为示例
+                // 实际使用时需要注册Pixabay账户获取API密钥
+                pixabayWallpapers = [
+                    { url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg' },
+                    { url: 'https://cdn.pixabay.com/photo/2017/07/03/20/17/abstract-2468874_1280.jpg' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg' },
+                    { url: 'https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_1280.jpg' }
+                ];
+                
+                console.log('Pixabay壁纸列表:', pixabayWallpapers);
+                return pixabayWallpapers;
+            } catch (error) {
+                console.error('获取Pixabay壁纸失败:', error);
+                // 出错时使用备用壁纸
+                pixabayWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                return pixabayWallpapers;
+            }
+        }
+        
+        // 获取Unsplash壁纸数据
+        async function fetchUnsplashWallpapers() {
+            try {
+                // 如果已经有壁纸数据，直接返回
+                if (unsplashWallpapers.length > 0) {
+                    return unsplashWallpapers;
+                }
+                
+                console.log('开始获取Unsplash壁纸数据...');
+                
+                // Unsplash壁纸URL
+                unsplashWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                
+                console.log('Unsplash壁纸列表:', unsplashWallpapers);
+                return unsplashWallpapers;
+            } catch (error) {
+                console.error('获取Unsplash壁纸失败:', error);
+                // 出错时使用备用壁纸
+                unsplashWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                return unsplashWallpapers;
+            }
+        }
+        
+        // 切换到下一张壁纸
+        function nextBackground() {
+            // 根据当前选择的壁纸源获取壁纸
+            loadCurrentWallpaperSource().then(wallpapers => {
+                if (wallpapers && wallpapers.length > 0) {
+                    currentWallpaperIndex = (currentWallpaperIndex + 1) % wallpapers.length;
+                    setBackground(wallpapers[currentWallpaperIndex]);
+                }
+            }).catch(error => {
+                console.error('获取壁纸失败:', error);
+                // 如果获取失败，使用默认壁纸
+                const defaultWallpaper = { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' };
+                setBackground(defaultWallpaper);
+            });
+        }
+        
+        // 切换到上一张壁纸
+        function prevBackground() {
+            // 根据当前选择的壁纸源获取壁纸
+            loadCurrentWallpaperSource().then(wallpapers => {
+                if (wallpapers && wallpapers.length > 0) {
+                    currentWallpaperIndex = (currentWallpaperIndex - 1 + wallpapers.length) % wallpapers.length;
+                    setBackground(wallpapers[currentWallpaperIndex]);
+                }
+            }).catch(error => {
+                console.error('获取壁纸失败:', error);
+                // 如果获取失败，使用默认壁纸
+                const defaultWallpaper = { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' };
+                setBackground(defaultWallpaper);
+            });
+        }
+        
+        // 随机切换壁纸
+        function changeBackground() {
+            // 根据当前选择的壁纸源获取壁纸
+            loadCurrentWallpaperSource().then(wallpapers => {
+                if (wallpapers && wallpapers.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * wallpapers.length);
+                    currentWallpaperIndex = randomIndex;
+                    setBackground(wallpapers[randomIndex]);
+                }
+            }).catch(error => {
+                console.error('获取壁纸失败:', error);
+                // 如果获取失败，使用默认壁纸
+                const defaultWallpaper = { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' };
+                setBackground(defaultWallpaper);
+            });
+        }
+        
+
+        
+        // 设置背景图片
+        function setBackground(image) {
+            const imageUrl = image.url;
+            
+            // 确保背景图片正确设置
+            document.body.style.backgroundImage = `url('${imageUrl}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            
+            // 添加切换动画效果
+            document.body.style.transition = 'background-image 0.5s ease';
+            
+            // 保存背景图片URL到本地存储
+            localStorage.setItem('backgroundImage', imageUrl);
+            localStorage.setItem('backgroundIndex', currentWallpaperIndex);
+            
+            console.log('背景已设置为:', imageUrl);
+        }
+        
+        // 备份数据到Gist
+        async function backupToGist() {
+            try {
+                // 获取当前数据
+                const data = {
+                    websiteGroups: websiteGroups,
+                    theme: document.documentElement.getAttribute('data-theme') || 'light',
+                    backgroundIndex: currentWallpaperIndex,
+                    backgroundImage: document.body.style.backgroundImage
+                };
+                
+                // 创建Gist数据
+                const gistData = {
+                    description: "知了导航数据备份",
+                    public: false,
+                    files: {
+                        "zhiwen-navigation-data.json": {
+                            content: JSON.stringify(data, null, 2)
+                        }
+                    }
+                };
+                
+                // 这里需要用户输入GitHub token
+                const token = prompt("请输入GitHub Personal Access Token (需要gist权限):");
+                if (!token) {
+                    alert("需要GitHub token才能备份数据");
+                    return;
+                }
+                
+                // 创建Gist
+                const response = await fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(gistData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    const gistUrl = result.html_url;
+                    const gistId = result.id;
+                    
+                    // 保存Gist ID到localStorage，用于后续恢复
+                    localStorage.setItem('zhiwenNavigationGistId', gistId);
+                    
+                    alert("备份成功！数据已自动关联，可直接点击恢复数据按钮进行恢复。");
+                } else {
+                    const error = await response.json();
+                    alert("备份失败: " + (error.message || "未知错误"));
+                }
+            } catch (error) {
+                console.error("备份错误:", error);
+                alert("备份过程中发生错误: " + error.message);
+            }
+        }
+        
+        // 从Gist恢复数据
+        async function restoreFromGist() {
+            try {
+                // 从localStorage获取最近的Gist ID
+                const gistId = localStorage.getItem('zhiwenNavigationGistId');
+                
+                if (!gistId) {
+                    alert("未找到备份数据。请先进行备份操作。");
+                    return;
+                }
+                
+                // 获取Gist数据
+                const response = await fetch(`https://api.github.com/gists/${gistId}`);
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert("获取Gist失败: " + (error.message || "未知错误"));
+                    return;
+                }
+                
+                const gist = await response.json();
+                const fileContent = gist.files["zhiwen-navigation-data.json"]?.content;
+                
+                if (!fileContent) {
+                    alert("Gist中未找到导航数据");
+                    return;
+                }
+                
+                // 解析数据
+                const data = JSON.parse(fileContent);
+                
+                // 确认恢复
+                if (!confirm("确定要恢复数据吗？这将覆盖当前的所有数据。")) {
+                    return;
+                }
+                
+                // 恢复数据
+                websiteGroups = data.websiteGroups || [];
+                if (data.theme) {
+                    document.documentElement.setAttribute('data-theme', data.theme);
+                    document.getElementById('darkThemeToggle').checked = data.theme === 'dark';
+                }
+                if (data.backgroundIndex !== undefined) {
+                    currentWallpaperIndex = data.backgroundIndex;
+                }
+                if (data.backgroundImage) {
+                    document.body.style.backgroundImage = data.backgroundImage;
+                }
+                
+                // 保存到本地存储
+                saveWebsites();
+                localStorage.setItem('theme', data.theme || 'light');
+                if (data.backgroundImage) {
+                    localStorage.setItem('backgroundImage', data.backgroundImage);
+                    localStorage.setItem('backgroundIndex', data.backgroundIndex || 0);
+                }
+                
+                // 重新渲染
+                renderGroups();
+                
+                alert("数据恢复成功！");
+            } catch (error) {
+                console.error("恢复错误:", error);
+                alert("恢复过程中发生错误: " + error.message);
+            }
+        }
+        
+        // 切换搜索引擎下拉菜单
+        function toggleEngineDropdown() {
+            const dropdown = document.getElementById('engineDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // 选择搜索引擎
+        function selectEngine(engineKey) {
+            currentSearchEngine = engineKey;
+            const engine = searchEngines[engineKey];
+            document.getElementById('currentEngineIcon').src = engine.favicon;
+            document.getElementById('engineDropdown').style.display = 'none';
+        }
+        
+        // 点击其他地方关闭搜索引擎选择器
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('engineDropdown');
+            const icon = document.getElementById('currentEngineDisplay');
+            
+            if (dropdown.style.display === 'block' && 
+                !dropdown.contains(event.target) && 
+                !icon.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // 更新时钟显示
+        function updateClock() {
+            const now = new Date();
+            
+            // 更新时间显示 (时:分:秒)
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            document.getElementById('currentTime').textContent = timeString;
+            
+            // 更新日期显示 (年月日 星期几)
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            const dateString = `${year}年${month}月${date}日 ${weekday}`;
+            
+            document.getElementById('currentDate').textContent = dateString;
+        }
+        
+        // 初始化时钟显示
+        function initClock() {
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+    </script>
+</body>
+</html>
