@@ -940,8 +940,10 @@
                 <div class="form-group">
                     <label class="form-label">数据管理</label>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="backupToGist()">备份数据</button>
-                        <button class="btn btn-secondary" onclick="restoreFromGist()">恢复数据</button>
+                        <button class="btn btn-primary" onclick="exportToFile()">导出到文件</button>
+                        <button class="btn btn-secondary" onclick="importFromFile()">从文件导入</button>
+                        <button class="btn btn-primary" onclick="backupToGist()">备份到Gist</button>
+                        <button class="btn btn-secondary" onclick="restoreFromGist()">从Gist恢复</button>
                     </div>
                 </div>
             </div>
@@ -2304,8 +2306,8 @@
             console.log('背景已设置为:', imageUrl);
         }
         
-        // 备份数据到Gist
-        async function backupToGist() {
+        // 导出数据到文件
+        function exportToFile() {
             try {
                 // 获取当前数据
                 const data = {
@@ -2315,24 +2317,134 @@
                     backgroundImage: document.body.style.backgroundImage
                 };
                 
-                // 创建Gist数据
-                const gistData = {
-                    description: "知了导航数据备份",
-                    public: false,
-                    files: {
-                        "zhiwen-navigation-data.json": {
-                            content: JSON.stringify(data, null, 2)
-                        }
+                // 创建JSON字符串
+                const jsonData = JSON.stringify(data, null, 2);
+                
+                // 创建Blob对象
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                
+                // 创建下载链接
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'zhiniao-navigation-data.json';
+                
+                // 触发下载
+                document.body.appendChild(a);
+                a.click();
+                
+                // 清理
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert("数据已导出到文件");
+            } catch (error) {
+                console.error("导出错误:", error);
+                alert("导出过程中发生错误: " + error.message);
+            }
+        }
+        
+        // 从文件导入数据
+        function importFromFile() {
+            try {
+                // 创建文件输入元素
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                // 设置文件选择回调
+                input.onchange = (event) => {
+                    const file = event.target.files[0];
+                    if (!file) {
+                        return;
                     }
+                    
+                    // 读取文件
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            // 解析JSON数据
+                            const data = JSON.parse(e.target.result);
+                            
+                            // 恢复数据
+                            websiteGroups = data.websiteGroups || [];
+                            if (data.theme) {
+                                document.documentElement.setAttribute('data-theme', data.theme);
+                                const themeToggle = document.getElementById('darkThemeToggle');
+                                if (themeToggle) {
+                                    themeToggle.checked = data.theme === 'dark';
+                                }
+                            }
+                            if (data.backgroundIndex !== undefined) {
+                                currentWallpaperIndex = data.backgroundIndex;
+                            }
+                            if (data.backgroundImage) {
+                                document.body.style.backgroundImage = data.backgroundImage;
+                            }
+                            
+                            // 保存到本地存储
+                            saveWebsites();
+                            localStorage.setItem('theme', data.theme || 'light');
+                            if (data.backgroundImage) {
+                                localStorage.setItem('backgroundImage', data.backgroundImage);
+                                localStorage.setItem('backgroundIndex', data.backgroundIndex || 0);
+                            }
+                            
+                            // 重新渲染
+                            renderGroups();
+                            
+                            alert("数据导入成功");
+                        } catch (error) {
+                            console.error("解析错误:", error);
+                            alert("文件解析失败: " + error.message);
+                        }
+                    };
+                    
+                    reader.onerror = () => {
+                        alert("文件读取失败");
+                    };
+                    
+                    reader.readAsText(file);
                 };
                 
-                // 这里需要用户输入GitHub token
-                const token = prompt("请输入GitHub Personal Access Token (需要gist权限):");
-                if (!token) {
-                    alert("需要GitHub token才能备份数据");
-                    return;
+                // 触发文件选择
+                input.click();
+            } catch (error) {
+                console.error("导入错误:", error);
+                alert("导入过程中发生错误: " + error.message);
+            }
+        }
+        
+        // 备份数据到Gist
+        async function backupToGist() {
+            // 获取当前数据
+            const data = {
+                websiteGroups: websiteGroups,
+                theme: document.documentElement.getAttribute('data-theme') || 'light',
+                backgroundIndex: currentWallpaperIndex,
+                backgroundImage: document.body.style.backgroundImage
+            };
+            
+            // 创建Gist数据
+            const gistData = {
+                description: "知鸟导航数据备份",
+                public: false,
+                files: {
+                    "zhiniao-navigation-data.json": {
+                        content: JSON.stringify(data, null, 2)
+                    }
                 }
-                
+            };
+            
+            // 获取用户输入的GitHub token
+            const token = prompt("请输入GitHub Personal Access Token:");
+            if (!token) {
+                return;
+            }
+            
+            try {
                 // 创建Gist
                 const response = await fetch('https://api.github.com/gists', {
                     method: 'POST',
@@ -2345,14 +2457,18 @@
                 
                 if (response.ok) {
                     const result = await response.json();
-                    const gistUrl = result.html_url;
                     const gistId = result.id;
+                    const gistUrl = result.html_url;
                     
-                    // 保存Gist ID和token到localStorage，用于后续恢复
-                    localStorage.setItem('zhiwenNavigationGistId', gistId);
-                    localStorage.setItem('zhiwenNavigationToken', token);
-                    
-                    alert("备份成功！数据已自动关联，可直接点击恢复数据按钮进行恢复。\n\ntoken已保存，恢复时无需再次输入。");
+                    // 保存Gist ID到localStorage
+                    localStorage.setItem('zhiniaoNavigationGistId', gistId);
+                    // 同时保存token用于后续恢复（可选）
+                    localStorage.setItem('zhiniaoNavigationToken', token);
+                    alert(`数据已备份到Gist
+
+Gist ID: ${gistId}
+您可以将此ID保存下来，以便在其他设备上恢复数据
+Gist URL: ${gistUrl}`);
                 } else {
                     const error = await response.json();
                     alert("备份失败: " + (error.message || "未知错误"));
@@ -2365,52 +2481,44 @@
         
         // 从Gist恢复数据
         async function restoreFromGist() {
-            try {
-                // 从localStorage获取最近的Gist ID
-                let gistId = localStorage.getItem('zhiwenNavigationGistId');
-                let token = localStorage.getItem('zhiwenNavigationToken');
+            // 获取用户输入的GitHub token（可选，用于访问私有Gist）
+            let token = localStorage.getItem('zhiniaoNavigationToken');
+            if (!token) {
+                token = prompt("请输入GitHub Personal Access Token (可选，用于访问私有Gist):");
+                if (token) {
+                    // 保存token到localStorage，用于下次恢复
+                    localStorage.setItem('zhiniaoNavigationToken', token);
+                }
+            }
+            
+            // 尝试从localStorage获取Gist ID
+            let gistId = localStorage.getItem('zhiniaoNavigationGistId');
+            
+            // 如果没有找到保存的Gist ID，提示用户手动输入
+            if (!gistId) {
+                const userInput = prompt("未找到自动备份数据。\n\n如果您之前已备份数据，请输入Gist ID或Gist URL：\n\n如果您没有备份数据，请点击取消。");
+                if (!userInput) {
+                    alert("操作已取消。");
+                    return;
+                }
                 
-                // 如果没有找到保存的Gist ID，提示用户手动输入
+                // 从用户输入中提取Gist ID（支持直接输入ID或完整URL）
+                gistId = userInput.trim();
+                if (userInput.includes('github.com')) {
+                    // 从URL中提取Gist ID
+                    const urlMatch = userInput.match(/gist\.github\.com\/(?:[^\/]+\/)?([a-zA-Z0-9]+)/);
+                    if (urlMatch && urlMatch[1]) {
+                        gistId = urlMatch[1];
+                    }
+                }
+                
                 if (!gistId) {
-                    const userInput = prompt("未找到自动备份数据。\n\n如果您之前已备份数据，请输入Gist ID或Gist URL：\n\n如果您没有备份数据，请点击取消。");
-                    if (!userInput) {
-                        alert("操作已取消。");
-                        return;
-                    }
-                    
-                    // 从用户输入中提取Gist ID（支持直接输入ID或完整URL）
-                    let extractedGistId = userInput.trim();
-                    if (userInput.includes('github.com')) {
-                        // 从URL中提取Gist ID
-                        const urlMatch = userInput.match(/gist\.github\.com\/(?:[^\/]+\/)?([a-zA-Z0-9]+)/);
-                        if (urlMatch && urlMatch[1]) {
-                            extractedGistId = urlMatch[1];
-                        }
-                    }
-                    
-                    if (!extractedGistId) {
-                        alert("输入的Gist ID或URL格式不正确。");
-                        return;
-                    }
-                    
-                    // 使用用户提供的Gist ID
-                    gistId = extractedGistId;
+                    alert("输入的Gist ID或URL格式不正确。");
+                    return;
                 }
-                
-                // 如果没有找到保存的token，提示用户输入
-                if (!token) {
-                    token = prompt("请输入GitHub Personal Access Token (需要gist权限):\n\n如果您没有token，可以留空尝试匿名访问（可能受限）:");
-                    if (token !== null && token.trim() !== '') {
-                        // 保存token到localStorage，用于下次恢复
-                        localStorage.setItem('zhiwenNavigationToken', token.trim());
-                    } else {
-                        token = null;
-                    }
-                }
-                
-                // 显示正在恢复的提示
-                alert("正在恢复数据，请稍候...");
-                
+            }
+            
+            try {
                 // 准备请求头
                 const headers = {
                     'Content-Type': 'application/json'
@@ -2442,26 +2550,20 @@
                 }
                 
                 const gist = await response.json();
-                const fileContent = gist.files["zhiwen-navigation-data.json"]?.content;
+                const fileContent = gist.files["zhiniao-navigation-data.json"]?.content;
                 
                 if (!fileContent) {
-                    alert("Gist中未找到导航数据\n\n请确认您选择的Gist包含名为 'zhiwen-navigation-data.json' 的文件。");
+                    alert("Gist中未找到导航数据\n\n请确认您选择的Gist包含名为 'zhiniao-navigation-data.json' 的文件。");
                     return;
                 }
                 
                 // 解析数据
                 const data = JSON.parse(fileContent);
                 
-                // 确认恢复
-                if (!confirm("确定要恢复数据吗？这将覆盖当前的所有数据。\n\n注意：恢复后页面将重新加载以应用更改。")) {
-                    return;
-                }
-                
                 // 恢复数据
                 websiteGroups = data.websiteGroups || [];
                 if (data.theme) {
                     document.documentElement.setAttribute('data-theme', data.theme);
-                    // 更新开关状态
                     const themeToggle = document.getElementById('darkThemeToggle');
                     if (themeToggle) {
                         themeToggle.checked = data.theme === 'dark';
@@ -2486,14 +2588,9 @@
                 renderGroups();
                 
                 // 保存Gist ID到localStorage，用于下次恢复
-                localStorage.setItem('zhiwenNavigationGistId', gistId);
+                localStorage.setItem('zhiniaoNavigationGistId', gistId);
                 
-                alert("数据恢复成功！页面将重新加载以应用所有更改。\n\n如果页面未自动刷新，请手动刷新页面。");
-                
-                // 页面重新加载以确保所有更改生效
-                setTimeout(() => {
-                    location.reload();
-                }, 2000);
+                alert("数据恢复成功");
             } catch (error) {
                 console.error("恢复错误:", error);
                 alert("恢复过程中发生错误: " + error.message);
