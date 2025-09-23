@@ -374,7 +374,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10px 8px;
+            padding: 12px 8px 8px 8px; /* 调整padding增加+号与文字的距离 */
             background: transparent;
             border: none;
             border-radius: 10px;
@@ -383,15 +383,12 @@
             transition: all 0.3s;
             min-height: auto;
             opacity: 0.85; /* 稍微提高透明度 */
+            position: relative; /* 为伪元素定位做准备 */
         }
 
         [data-theme="dark"] .add-btn {
             color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
             opacity: 0.85; /* 稍微提高透明度 */
-        }
-        
-        [data-theme="dark"] .add-icon {
-            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
         }
 
         .add-btn:hover {
@@ -405,15 +402,36 @@
             opacity: 1; /* 悬停时恢复不透明度 */
         }
 
-        .add-icon {
-            font-size: 20px;
-            margin-bottom: 5px;
-            color: rgba(255, 255, 255, 0.9); /* 更明显的白色 */
+        /* 使用CSS伪元素创建加号，替代Font Awesome图标 */
+        .add-btn::before {
+            content: '';
+            position: absolute;
+            width: 18px; /* 增大加号尺寸 */
+            height: 3px; /* 增大加号尺寸 */
+            background-color: white; /* 默认使用白色 */
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* 增强阴影效果 */
+            top: 18px; /* 调整位置增加与文字的距离 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .add-btn::after {
+            content: '';
+            position: absolute;
+            width: 3px; /* 增大加号尺寸 */
+            height: 18px; /* 增大加号尺寸 */
+            background-color: white; /* 默认使用白色 */
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* 增强阴影效果 */
+            top: 11px; /* 调整位置增加与文字的距离 */
+            left: 50%;
+            transform: translateX(-50%);
         }
         
-        /* 浅色主题下的添加按钮图标颜色 */
-        [data-theme="light"] .add-icon {
-            color: rgba(0, 0, 0, 0.7); /* 浅色主题下使用深色 */
+        /* 浅色主题下的添加按钮颜色 */
+        [data-theme="light"] .add-btn::before,
+        [data-theme="light"] .add-btn::after {
+            background-color: rgba(255, 255, 255, 0.7); /* 与文字颜色一致 */
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3); /* 适当的阴影效果 */
         }
 
         /* 添加网站名称样式 */
@@ -429,6 +447,7 @@
             overflow: hidden;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+            margin-top: 20px; /* 增加与+号的距离 */
         }
 
         /* 底部控制 */
@@ -873,7 +892,7 @@
                     </a><a href="https://sapphira0313.github.io/Notepad/" class="nav-item" target="_blank" data-group-id="group1" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(9).ico" alt="临时记事本" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">临时记事本</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757746003950_rqernikhb">Amazon运营工具</h2><div class="nav-grid"><a href="https://erp.lingxing.com/erp/mreport/salesStat" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757746003950_rqernikhb">Amazon运营工具</h2><div class="nav-grid"><a href="https://erp.lingxing.com/erp/mreport/salesStat" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(10).ico" alt="领星ERP" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">领星ERP</div>
                     </a><a href="https://www.amz123.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
@@ -891,7 +910,7 @@
                     </a><a href="https://www.xiyouzhaoci.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(13).ico" alt="西柚找词" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">西柚找词</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664098158_b4ydu2u0q">在线翻译</h2><div class="nav-grid"><a href="https://translate.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664098158_b4ydu2u0q">在线翻译</h2><div class="nav-grid"><a href="https://translate.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(14).ico" alt="谷歌翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">谷歌翻译</div>
                     </a><a href="https://www.deepl.com/translator" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
@@ -903,7 +922,7 @@
                     </a><a href="https://fanyi.baidu.com/mtpe-individual/transText#/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(17).ico" alt="百度翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">百度翻译</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757640908688_36lglsc9o">大模型</h2><div class="nav-grid"><a href="https://chat.openai.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757640908688_36lglsc9o">大模型</h2><div class="nav-grid"><a href="https://chat.openai.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/globe.svg" alt="Chatgpt" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">Chatgpt</div>
                     </a><a href="https://chat.deepseek.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
@@ -915,7 +934,7 @@
                     </a><a href="https://www.doubao.com/chat/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/doubao.com.webp" alt="豆包" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">豆包</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664333733_473a779fn">工具箱</h2><div class="nav-grid"><a href="https://www.iconfont.cn/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664333733_473a779fn">工具箱</h2><div class="nav-grid"><a href="https://www.iconfont.cn/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(18).ico" alt="Iconfont" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">Iconfont</div>
                     </a><a href="https://www.emojiall.com/zh-hans/node/70" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
@@ -939,7 +958,7 @@
                     </a><a href="https://www.cifnews.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="7" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(24).ico" alt="雨果网" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">雨果网</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664452005_jv4gy7p8g">邮箱</h2><div class="nav-grid"><a href="https://mail.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664452005_jv4gy7p8g">邮箱</h2><div class="nav-grid"><a href="https://mail.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/gmail.ico" alt="谷歌邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">谷歌邮箱</div>
                     </a><a href="https://outlook.live.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
@@ -951,7 +970,7 @@
                     </a><a href="https://mail.163.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
                         <img src="./知鸟导航_files/favicon(27).ico" alt="163邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
                         <div class="nav-name">163邮箱</div>
-                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div></div>
+                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div></div>
     </div>
     
     <!-- 底部控制 -->
