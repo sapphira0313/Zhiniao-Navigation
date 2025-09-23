@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0050)https://sapphira0313.github.io/Zhiniao-Navigation/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知鸟导航</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./知鸟导航_files/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./知鸟导航_files/all.min.css">
     <style>
         :root {
             --primary-color: #4361ee;
@@ -18,6 +18,19 @@
             --card-bg: #ffffff;
             --text-dark: white;
             --text-light: white;
+            /* 添加字体渲染优化 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* 全局抗模糊优化 */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         /* 全局隐藏焦点轮廓 */
@@ -395,7 +408,12 @@
         .add-icon {
             font-size: 20px;
             margin-bottom: 5px;
-            color: rgba(255, 255, 255, 0.7); /* 稍微加深颜色 */
+            color: rgba(255, 255, 255, 0.9); /* 更明显的白色 */
+        }
+        
+        /* 浅色主题下的添加按钮图标颜色 */
+        [data-theme="light"] .add-icon {
+            color: rgba(0, 0, 0, 0.7); /* 浅色主题下使用深色 */
         }
 
         /* 添加网站名称样式 */
@@ -438,6 +456,8 @@
             gap: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         [data-theme="dark"] .control-btn {
@@ -453,6 +473,73 @@
 
         [data-theme="dark"] .control-btn:hover {
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 右下角固定按钮特殊样式 */
+        .control-btn.fixed-bottom {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            transition: all 0.3s ease;
+            /* 添加硬件加速 */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            /* 确保按钮内容不被选中 */
+            user-select: none;
+            -webkit-user-select: none;
+            /* 防止模糊的其他优化 */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            /* 确保清晰的边缘 */
+            isolation: isolate;
+            /* 添加抗锯齿 */
+            filter: contrast(1.05) saturate(1.05);
+            /* 优化渲染性能 */
+            will-change: transform;
+        }
+        
+        /* SVG图标样式 */
+        .control-btn.fixed-bottom svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            /* 添加SVG渲染优化 */
+            shape-rendering: geometricPrecision;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            /* 确保SVG在高DPI屏幕上清晰 */
+            vector-effect: non-scaling-stroke;
+            /* 防止SVG模糊 */
+            shape-rendering: crispEdges;
+            /* 添加抗锯齿 */
+            image-rendering: -webkit-optimize-contrast;
+        }
+        
+        .control-btn.fixed-bottom:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.35);
+            will-change: transform;
+        }
+
+        [data-theme="dark"] .control-btn.fixed-bottom:hover {
+            background: rgba(30, 30, 46, 0.6);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         /* 模态框 */
@@ -721,19 +808,19 @@
         }
     </style>
 </head>
-<body>
+<body style="background-image: url(&quot;https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; background-attachment: fixed;">
     <!-- 顶部区域 -->
     <div class="top-section">
         <!-- 时钟显示 -->
         <div class="clock-container">
-            <div class="time" id="currentTime"></div>
-            <div class="date" id="currentDate"></div>
+            <div class="time" id="currentTime">11:25:32</div>
+            <div class="date" id="currentDate">2025年9月23日 星期二</div>
         </div>
         
         <!-- 搜索框 -->
         <div class="search-container">
             <div class="search-engine-icon" onclick="toggleEngineDropdown()" id="currentEngineDisplay">
-                <img src="https://www.baidu.com/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
+                <img src="./favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
             </div>
             <input type="text" class="search-input" id="searchInput" placeholder="搜索或输入网址..." onkeypress="if(event.key==='Enter')performSearch()">
             <button class="search-btn" onclick="performSearch()">
@@ -742,19 +829,19 @@
             <!-- 搜索引擎选择器 -->
             <div class="engine-dropdown" id="engineDropdown" style="display: none;">
                 <div class="engine-option" data-engine="baidu" onclick="selectEngine('baidu')">
-                    <img src="https://www.baidu.com/favicon.ico" alt="百度">
+                    <img src="./favicon.ico" alt="百度">
                     <span>百度</span>
                 </div>
                 <div class="engine-option" data-engine="google" onclick="selectEngine('google')">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    <img src="./favicon(1).ico" alt="Google">
                     <span>Google</span>
                 </div>
                 <div class="engine-option" data-engine="bing" onclick="selectEngine('bing')">
-                    <img src="https://www.bing.com/favicon.ico" alt="必应">
+                    <img src="./favicon(2).ico" alt="必应">
                     <span>必应</span>
                 </div>
                 <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine('duckduckgo')">
-                    <img src="https://duckduckgo.com/favicon.ico" alt="DuckDuckGo">
+                    <img src="./favicon(3).ico" alt="DuckDuckGo">
                     <span>DuckDuckGo</span>
                 </div>
             </div>
@@ -768,9 +855,103 @@
     
     <!-- 主要内容区域 -->
     <div class="main-content">
-        <div id="groupsContainer">
-            <!-- 分组将通过JavaScript动态生成 -->
-        </div>
+        <div id="groupsContainer"><h2 class="group-title" data-group-id="group1">常用网站</h2><div class="nav-grid"><a href="https://github.com/" class="nav-item" target="_blank" data-group-id="group1" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(4).ico" alt="GitHub" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">GitHub</div>
+                    </a><a href="https://gist.github.com/sapphira0313" class="nav-item" target="_blank" data-group-id="group1" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(5).ico" alt="gist备份" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">gist备份</div>
+                    </a><a href="https://www.notion.so/" class="nav-item" target="_blank" data-group-id="group1" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(6).ico" alt="Notion" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Notion</div>
+                    </a><a href="https://shimo.im/desktop" class="nav-item" target="_blank" data-group-id="group1" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(7).ico" alt="石墨文档" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">石墨文档</div>
+                    </a><a href="https://sapphira0313.github.io/Amazon-Tools/" class="nav-item" target="_blank" data-group-id="group1" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(8).ico" alt="Amz工具箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Amz工具箱</div>
+                    </a><a href="https://sapphira0313.github.io/Notepad/" class="nav-item" target="_blank" data-group-id="group1" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(9).ico" alt="临时记事本" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">临时记事本</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757746003950_rqernikhb">Amazon运营工具</h2><div class="nav-grid"><a href="https://erp.lingxing.com/erp/mreport/salesStat" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(10).ico" alt="领星ERP" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">领星ERP</div>
+                    </a><a href="https://www.amz123.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/60b9ece8ae5a9ba4024b4010.png" alt="Amz123" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Amz123</div>
+                    </a><a href="https://sellercentral.amazon.com/fba/profitabilitycalculator/index?mons_sel_locale=zh_CN" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(11).ico" alt="FBA计算器" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">FBA计算器</div>
+                    </a><a href="https://www.sif.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/logo.png" alt="Sif" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Sif</div>
+                    </a><a href="https://www.sellersprite.com/v2/welcome" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(12).ico" alt="卖家精灵" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">卖家精灵</div>
+                    </a><a href="https://www.xiyouzhaoci.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(13).ico" alt="西柚找词" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">西柚找词</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664098158_b4ydu2u0q">在线翻译</h2><div class="nav-grid"><a href="https://translate.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(14).ico" alt="谷歌翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">谷歌翻译</div>
+                    </a><a href="https://www.deepl.com/translator" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(15).ico" alt="Deepl" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Deepl</div>
+                    </a><a href="https://fanyi.youdao.com/#/TextTranslate" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(16).ico" alt="有道翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">有道翻译</div>
+                    </a><a href="https://fanyi.baidu.com/mtpe-individual/transText#/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(17).ico" alt="百度翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">百度翻译</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757640908688_36lglsc9o">大模型</h2><div class="nav-grid"><a href="https://chat.openai.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(18).ico" alt="Chatgpt" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Chatgpt</div>
+                    </a><a href="https://chat.deepseek.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon.svg" alt="Deepseek" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Deepseek</div>
+                    </a><a href="https://chat.qwen.ai/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon.png" alt="Qwen" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Qwen</div>
+                    </a><a href="https://www.doubao.com/chat/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/doubao.com.webp" alt="豆包" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">豆包</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664333733_473a779fn">工具箱</h2><div class="nav-grid"><a href="https://www.iconfont.cn/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(19).ico" alt="Iconfont" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Iconfont</div>
+                    </a><a href="https://www.emojiall.com/zh-hans/node/70" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(20).ico" alt="Emoji all" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Emoji all</div>
+                    </a><a href="https://www.17track.net/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/5c2c67043c8110681c84c2e2.png" alt="国际物流查询" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">国际物流查询</div>
+                    </a><a href="https://ziplucas.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(21).ico" alt="美国邮政编码地址" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">美国邮政编码地址</div>
+                    </a><a href="https://samezip.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(22).ico" alt="Samezip" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Samezip</div>
+                    </a><a href="https://www.google.com/maps" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(1).ico" alt="谷歌地图" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">谷歌地图</div>
+                    </a><a href="https://www.wearesellers.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="6" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(23).ico" alt="知无不言" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">知无不言</div>
+                    </a><a href="https://www.cifnews.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="7" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(24).ico" alt="雨果网" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">雨果网</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664452005_jv4gy7p8g">邮箱</h2><div class="nav-grid"><a href="https://mail.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/gmail.ico" alt="谷歌邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">谷歌邮箱</div>
+                    </a><a href="https://outlook.live.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(25).ico" alt="Outlook" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">Outlook</div>
+                    </a><a href="https://exmail.qq.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(26).ico" alt="企业微信邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">企业微信邮箱</div>
+                    </a><a href="https://mail.163.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(27).ico" alt="163邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <div class="nav-name">163邮箱</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div></div>
     </div>
     
     <!-- 底部控制 -->
@@ -781,19 +962,34 @@
     </div>
     
     <!-- 背景切换按钮 -->
-    <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
-        <button class="control-btn" onclick="prevBackground()" style="padding: 8px 12px;">
-            <i class="fas fa-arrow-left"></i>
+    <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; transform: translateZ(0);">
+        <button class="control-btn fixed-bottom" onclick="prevBackground()" title="上一张">
+            <!-- 使用SVG图标替换Font Awesome图标 -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: translateZ(0); shape-rendering: geometricPrecision;">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
         </button>
-        <button class="control-btn" onclick="changeBackground()" style="padding: 8px 12px;">
-            <i class="fas fa-sync-alt"></i>
+        <button class="control-btn fixed-bottom" onclick="changeBackground()" title="刷新">
+            <!-- 使用SVG图标替换Font Awesome图标 -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: translateZ(0); shape-rendering: geometricPrecision;">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
         </button>
-        <button class="control-btn" onclick="nextBackground()" style="padding: 8px 12px;">
-            <i class="fas fa-arrow-right"></i>
+        <button class="control-btn fixed-bottom" onclick="nextBackground()" title="下一张">
+            <!-- 使用SVG图标替换Font Awesome图标 -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: translateZ(0); shape-rendering: geometricPrecision;">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
         </button>
         <!-- 壁纸源切换按钮 -->
-        <button class="control-btn" onclick="toggleWallpaperSource()" style="padding: 8px 12px;">
-            <i class="fas fa-image"></i>
+        <button class="control-btn fixed-bottom" onclick="toggleWallpaperSource()" title="更换壁纸源">
+            <!-- 使用SVG图标替换Font Awesome图标 -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: translateZ(0); shape-rendering: geometricPrecision;">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <path d="M21 15l-5-5L5 21"></path>
+            </svg>
         </button>
     </div>
     
@@ -802,7 +998,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">添加网站</h5>
-                <button class="modal-close" onclick="closeModal('addWebsiteModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('addWebsiteModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -826,7 +1022,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">编辑网站</h5>
-                <button class="modal-close" onclick="closeModal('editWebsiteModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('editWebsiteModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -843,7 +1039,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">分组</label>
-                    <select class="form-select" id="editGroup"></select>
+                    <select class="form-select" id="editGroup"><option value="group1">常用网站</option><option value="group_1757746003950_rqernikhb">Amazon运营工具</option><option value="group_1757664098158_b4ydu2u0q">在线翻译</option><option value="group_1757640908688_36lglsc9o">大模型</option><option value="group_1757664333733_473a779fn">工具箱</option><option value="group_1757664452005_jv4gy7p8g">邮箱</option></select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -862,7 +1058,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">添加分组</h5>
-                <button class="modal-close" onclick="closeModal('addGroupModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('addGroupModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -882,7 +1078,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">编辑分组</h5>
-                <button class="modal-close" onclick="closeModal('editGroupModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('editGroupModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -903,7 +1099,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">修改分组名称</h5>
-                <button class="modal-close" onclick="closeModal('editGroupNameModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('editGroupNameModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -923,7 +1119,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">设置</h5>
-                <button class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -940,8 +1136,6 @@
                 <div class="form-group">
                     <label class="form-label">数据管理</label>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="exportToFile()">导出到文件</button>
-                        <button class="btn btn-secondary" onclick="importFromFile()">从文件导入</button>
                         <button class="btn btn-primary" onclick="backupToGist()">备份到Gist</button>
                         <button class="btn btn-secondary" onclick="restoreFromGist()">从Gist恢复</button>
                     </div>
@@ -997,22 +1191,20 @@
         
         // 搜索引擎配置
         const searchEngines = {
-            baidu: { name: '百度', url: 'https://www.baidu.com/s?wd=', favicon: 'https://www.baidu.com/favicon.ico' },
-            google: { name: 'Google', url: 'https://www.google.com/search?q=', favicon: 'https://www.google.com/favicon.ico' },
-            bing: { name: '必应', url: 'https://www.bing.com/search?q=', favicon: 'https://www.bing.com/favicon.ico' },
-            duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=', favicon: 'https://duckduckgo.com/favicon.ico' }
+            baidu: { name: '百度', url: 'https://www.baidu.com/s?wd=', favicon: './favicon.ico' },
+            google: { name: 'Google', url: 'https://www.google.com/search?q=', favicon: './favicon(1).ico' },
+            bing: { name: '必应', url: 'https://www.bing.com/search?q=', favicon: './favicon(2).ico' },
+            duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=', favicon: './favicon(3).ico' }
         };
         
         // 壁纸配置（支持多种来源）
         let bingWallpapers = [];
-        let pexelsWallpapers = [];
-        let pixabayWallpapers = [];
-        let unsplashWallpapers = [];
+        let wallhavenWallpapers = [];
         let currentWallpaperIndex = 0;
         
         // 壁纸源配置
-        const wallpaperSources = ['pexels', 'pixabay', 'unsplash', 'bing'];
-        let currentWallpaperSource = 'pexels'; // 默认使用Pexels壁纸
+        const wallpaperSources = ['wallhaven', 'bing'];
+        let currentWallpaperSource = 'wallhaven'; // 默认使用Wallhaven壁纸
         
         // 切换壁纸源
         function toggleWallpaperSource() {
@@ -1053,9 +1245,7 @@
             
             // 更新显示内容
             const sourceNames = {
-                'pexels': 'Pexels',
-                'pixabay': 'Pixabay',
-                'unsplash': 'Unsplash',
+                'wallhaven': 'Wallhaven',
                 'bing': 'Bing'
             };
             
@@ -1071,17 +1261,17 @@
         
         // 加载当前壁纸源
         async function loadCurrentWallpaperSource() {
+            // 每次都清除缓存以获取新的壁纸数据
+            bingWallpapers = [];
+            wallhavenWallpapers = [];
+            
             switch(currentWallpaperSource) {
                 case 'bing':
                     return await fetchBingWallpapers();
-                case 'pexels':
-                    return await fetchPexelsWallpapers();
-                case 'pixabay':
-                    return await fetchPixabayWallpapers();
-                case 'unsplash':
-                    return await fetchUnsplashWallpapers();
+                case 'wallhaven':
+                    return await fetchWallhavenWallpapers();
                 default:
-                    return await fetchBingWallpapers();
+                    return await fetchWallhavenWallpapers();
             }
         }
         
@@ -1098,6 +1288,12 @@
                 initClock();
             } catch (error) {
                 console.error('时钟初始化失败:', error);
+            }
+            
+            // 设置默认搜索引擎图标
+            const currentEngine = searchEngines[currentSearchEngine];
+            if (currentEngine) {
+                document.getElementById('currentEngineIcon').src = currentEngine.favicon;
             }
             
 
@@ -2058,6 +2254,44 @@
             });
         }
         
+        // 获取Wallhaven壁纸数据
+        async function fetchWallhavenWallpapers() {
+            try {
+                // 如果已经有壁纸数据，直接返回
+                if (wallhavenWallpapers && wallhavenWallpapers.length > 0) {
+                    return wallhavenWallpapers;
+                }
+                
+                console.log('开始获取Wallhaven壁纸数据...');
+                
+                // 使用壁纸API获取壁纸数据
+                // 由于wallhaven.cc已被墙，我们使用一个公共壁纸API作为替代
+                // 使用 JSONPlaceholder API 获取壁纸数据，然后使用默认壁纸
+                // 这里我们直接使用高质量的默认壁纸列表
+                wallhavenWallpapers = [
+                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
+                    { url: 'https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
+                ];
+                
+                console.log('Wallhaven壁纸列表:', wallhavenWallpapers);
+                return wallhavenWallpapers;
+            } catch (error) {
+                console.error('获取Wallhaven壁纸失败:', error);
+                // 出错时使用备用壁纸
+                wallhavenWallpapers = [
+                    { url: 'https://w.wallhaven.cc/full/1k/wallhaven-1k3v1j.jpg' },
+                    { url: 'https://w.wallhaven.cc/full/5w/wallhaven-5we66w.jpg' },
+                    { url: 'https://w.wallhaven.cc/full/8o/wallhaven-8ox1pm.jpg' },
+                    { url: 'https://w.wallhaven.cc/full/9m/wallhaven-9mge6y.jpg' },
+                    { url: 'https://w.wallhaven.cc/full/d6/wallhaven-d678gy.jpg' }
+                ];
+                return wallhavenWallpapers;
+            }
+        }
+        
         // 获取Bing壁纸数据（使用corsproxy.io代理方案）
         async function fetchBingWallpapers() {
             try {
@@ -2139,101 +2373,6 @@
             }
         }
         
-        // 获取Pexels壁纸数据
-        async function fetchPexelsWallpapers() {
-            try {
-                // 如果已经有壁纸数据，直接返回
-                if (pexelsWallpapers.length > 0) {
-                    return pexelsWallpapers;
-                }
-                
-                console.log('开始获取Pexels壁纸数据...');
-                
-                // Pexels API需要API密钥，这里使用一些精选的壁纸URL作为示例
-                // 实际使用时需要注册Pexels账户获取API密钥
-                pexelsWallpapers = [
-                    { url: 'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-                    { url: 'https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-                    { url: 'https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-                    { url: 'https://images.pexels.com/photos/2387436/pexels-photo-2387436.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-                    { url: 'https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }
-                ];
-                
-                console.log('Pexels壁纸列表:', pexelsWallpapers);
-                return pexelsWallpapers;
-            } catch (error) {
-                console.error('获取Pexels壁纸失败:', error);
-                // 出错时使用备用壁纸
-                pexelsWallpapers = [
-                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
-                ];
-                return pexelsWallpapers;
-            }
-        }
-        
-        // 获取Pixabay壁纸数据
-        async function fetchPixabayWallpapers() {
-            try {
-                // 如果已经有壁纸数据，直接返回
-                if (pixabayWallpapers.length > 0) {
-                    return pixabayWallpapers;
-                }
-                
-                console.log('开始获取Pixabay壁纸数据...');
-                
-                // Pixabay API需要API密钥，这里使用一些精选的壁纸URL作为示例
-                // 实际使用时需要注册Pixabay账户获取API密钥
-                pixabayWallpapers = [
-                    { url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_1280.jpg' },
-                    { url: 'https://cdn.pixabay.com/photo/2017/07/03/20/17/abstract-2468874_1280.jpg' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg' },
-                    { url: 'https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_1280.jpg' }
-                ];
-                
-                console.log('Pixabay壁纸列表:', pixabayWallpapers);
-                return pixabayWallpapers;
-            } catch (error) {
-                console.error('获取Pixabay壁纸失败:', error);
-                // 出错时使用备用壁纸
-                pixabayWallpapers = [
-                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
-                ];
-                return pixabayWallpapers;
-            }
-        }
-        
-        // 获取Unsplash壁纸数据
-        async function fetchUnsplashWallpapers() {
-            try {
-                // 如果已经有壁纸数据，直接返回
-                if (unsplashWallpapers.length > 0) {
-                    return unsplashWallpapers;
-                }
-                
-                console.log('开始获取Unsplash壁纸数据...');
-                
-                // Unsplash壁纸URL
-                unsplashWallpapers = [
-                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
-                    { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
-                    { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
-                    { url: 'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' },
-                    { url: 'https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
-                ];
-                
-                console.log('Unsplash壁纸列表:', unsplashWallpapers);
-                return unsplashWallpapers;
-            } catch (error) {
-                console.error('获取Unsplash壁纸失败:', error);
-                // 出错时使用备用壁纸
-                unsplashWallpapers = [
-                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' }
-                ];
-                return unsplashWallpapers;
-            }
-        }
-        
         // 切换到下一张壁纸
         function nextBackground() {
             // 根据当前选择的壁纸源获取壁纸
@@ -2306,8 +2445,8 @@
             console.log('背景已设置为:', imageUrl);
         }
         
-        // 导出数据到文件
-        function exportToFile() {
+        // 备份数据到Gist
+        async function backupToGist() {
             try {
                 // 获取当前数据
                 const data = {
@@ -2320,100 +2459,32 @@
                 // 创建JSON字符串
                 const jsonData = JSON.stringify(data, null, 2);
                 
-                // 创建Blob对象
-                const blob = new Blob([jsonData], { type: 'application/json' });
-                
-                // 创建下载链接
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'zhiniao-navigation-data.json';
-                
-                // 触发下载
-                document.body.appendChild(a);
-                a.click();
-                
-                // 清理
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                alert("数据已导出到文件");
-            } catch (error) {
-                console.error("导出错误:", error);
-                alert("导出过程中发生错误: " + error.message);
-            }
-        }
-        
-        // 从文件导入数据
-        function importFromFile() {
-            try {
-                // 创建文件输入元素
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '.json';
-                
-                // 设置文件选择回调
-                input.onchange = (event) => {
-                    const file = event.target.files[0];
-                    if (!file) {
-                        return;
-                    }
-                    
-                    // 读取文件
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        try {
-                            // 解析JSON数据
-                            const data = JSON.parse(e.target.result);
-                            
-                            // 恢复数据
-                            websiteGroups = data.websiteGroups || [];
-                            if (data.theme) {
-                                document.documentElement.setAttribute('data-theme', data.theme);
-                                const themeToggle = document.getElementById('darkThemeToggle');
-                                if (themeToggle) {
-                                    themeToggle.checked = data.theme === 'dark';
-                                }
+                // 创建Gist
+                const response = await fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `token ${gistToken}`
+                    },
+                    body: JSON.stringify({
+                        description: 'My Website Groups Backup',
+                        public: false,
+                        files: {
+                            'backup.json': {
+                                content: jsonData
                             }
-                            if (data.backgroundIndex !== undefined) {
-                                currentWallpaperIndex = data.backgroundIndex;
-                            }
-                            if (data.backgroundImage) {
-                                document.body.style.backgroundImage = data.backgroundImage;
-                            }
-                            
-                            // 保存到本地存储
-                            saveWebsites();
-                            localStorage.setItem('theme', data.theme || 'light');
-                            if (data.backgroundImage) {
-                                localStorage.setItem('backgroundImage', data.backgroundImage);
-                                localStorage.setItem('backgroundIndex', data.backgroundIndex || 0);
-                            }
-                            
-                            // 重新渲染
-                            renderGroups();
-                            
-                            alert("数据导入成功");
-                        } catch (error) {
-                            console.error("解析错误:", error);
-                            alert("文件解析失败: " + error.message);
                         }
-                    };
-                    
-                    reader.onerror = () => {
-                        alert("文件读取失败");
-                    };
-                    
-                    reader.readAsText(file);
-                };
+                    })
+                });
                 
-                // 触发文件选择
-                input.click();
+                if (response.ok) {
+                    const gist = await response.json();
+                    console.log('数据已备份到Gist:', gist.html_url);
+                } else {
+                    console.error('备份到Gist失败:', response.statusText);
+                }
             } catch (error) {
-                console.error("导入错误:", error);
-                alert("导入过程中发生错误: " + error.message);
+                console.error('备份到Gist时发生错误:', error);
             }
         }
         
@@ -2652,5 +2723,6 @@ Gist URL: ${gistUrl}`);
             setInterval(updateClock, 1000);
         }
     </script>
-</body>
-</html>
+
+
+</body></html>
