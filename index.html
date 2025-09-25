@@ -7,7 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="./知鸟导航_files/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./知鸟导航_files/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #4361ee;
@@ -254,13 +254,30 @@
             margin: 0 auto;
         }
 
-        /* 分组标题 */
+        /* 分组标题拖拽样式 */
         .group-title {
             font-size: 1.2rem;
             font-weight: 600;
             margin: 15px 0 8px;
-            padding-bottom: 3px;
+            padding: 10px 15px;
             color: white;
+            cursor: move; /* 显示拖拽手型 */
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .group-title:hover {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .group-title.dragging {
+            opacity: 0.6;
+            background-color: rgba(67, 97, 238, 0.3);
+        }
+
+        .group-title.drag-over {
+            border: 2px dashed #4361ee;
+            background-color: rgba(67, 97, 238, 0.1);
         }
 
         [data-theme="dark"] .group-title {
@@ -832,35 +849,35 @@
     <div class="top-section">
         <!-- 时钟显示 -->
         <div class="clock-container">
-            <div class="time" id="currentTime">14:09:21</div>
-            <div class="date" id="currentDate">2025年9月23日 星期二</div>
+            <div class="time" id="currentTime">10:53:25</div>
+            <div class="date" id="currentDate">2025年9月25日 星期四</div>
         </div>
         
         <!-- 搜索框 -->
         <div class="search-container">
             <div class="search-engine-icon" onclick="toggleEngineDropdown()" id="currentEngineDisplay">
-                <img src="https://www.baidu.com/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
+                <img src="./知鸟导航_files/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
             </div>
-            <input type="text" class="search-input" id="searchInput" placeholder="搜索或输入网址..." onkeypress="if(event.key==='Enter') performSearch()">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索或输入网址..." onkeypress="if(event.key===&#39;Enter&#39;) performSearch()">
             <button class="search-btn" onclick="performSearch()">
                 <i class="fas fa-search"></i>
             </button>
             <!-- 搜索引擎选择器 -->
             <div class="engine-dropdown" id="engineDropdown" style="display: none;">
-                <div class="engine-option" data-engine="baidu" onclick="selectEngine('baidu')">
-                    <img src="https://www.baidu.com/favicon.ico" alt="百度">
+                <div class="engine-option" data-engine="baidu" onclick="selectEngine(&#39;baidu&#39;)">
+                    <img src="./知鸟导航_files/favicon.ico" alt="百度">
                     <span>百度</span>
                 </div>
-                <div class="engine-option" data-engine="google" onclick="selectEngine('google')">
-                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                <div class="engine-option" data-engine="google" onclick="selectEngine(&#39;google&#39;)">
+                    <img src="./知鸟导航_files/favicon(1).ico" alt="Google">
                     <span>Google</span>
                 </div>
-                <div class="engine-option" data-engine="bing" onclick="selectEngine('bing')">
-                    <img src="https://www.bing.com/favicon.ico" alt="必应">
+                <div class="engine-option" data-engine="bing" onclick="selectEngine(&#39;bing&#39;)">
+                    <img src="./知鸟导航_files/favicon(2).ico" alt="必应">
                     <span>必应</span>
                 </div>
-                <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine('duckduckgo')">
-                    <img src="https://duckduckgo.com/favicon.ico" alt="DuckDuckGo">
+                <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine(&#39;duckduckgo&#39;)">
+                    <img src="./知鸟导航_files/favicon(3).ico" alt="DuckDuckGo">
                     <span>DuckDuckGo</span>
                 </div>
             </div>
@@ -875,102 +892,105 @@
     <!-- 主要内容区域 -->
     <div class="main-content">
         <div id="groupsContainer"><h2 class="group-title" data-group-id="group1">常用网站</h2><div class="nav-grid"><a href="https://github.com/" class="nav-item" target="_blank" data-group-id="group1" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(4).ico" alt="GitHub" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(4).ico" alt="GitHub" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">GitHub</div>
                     </a><a href="https://gist.github.com/sapphira0313" class="nav-item" target="_blank" data-group-id="group1" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(5).ico" alt="gist备份" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="https://gist.github.com/favicon.ico" alt="gist备份" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">gist备份</div>
                     </a><a href="https://www.notion.so/" class="nav-item" target="_blank" data-group-id="group1" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(6).ico" alt="Notion" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(5).ico" alt="Notion" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Notion</div>
                     </a><a href="https://shimo.im/desktop" class="nav-item" target="_blank" data-group-id="group1" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(7).ico" alt="石墨文档" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(6).ico" alt="石墨文档" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">石墨文档</div>
                     </a><a href="https://sapphira0313.github.io/Amazon-Tools/" class="nav-item" target="_blank" data-group-id="group1" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(8).ico" alt="Amz工具箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(7).ico" alt="Amz工具箱" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Amz工具箱</div>
                     </a><a href="https://sapphira0313.github.io/Notepad/" class="nav-item" target="_blank" data-group-id="group1" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(9).ico" alt="临时记事本" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(8).ico" alt="临时记事本" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">临时记事本</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757746003950_rqernikhb">Amazon运营工具</h2><div class="nav-grid"><a href="https://erp.lingxing.com/erp/mreport/salesStat" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(10).ico" alt="领星ERP" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757746003950_rqernikhb">Amazon运营工具</h2><div class="nav-grid"><a href="https://erp.lingxing.com/erp/mreport/salesStat" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(9).ico" alt="领星ERP" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">领星ERP</div>
                     </a><a href="https://www.amz123.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/60b9ece8ae5a9ba4024b4010.png" alt="Amz123" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/60b9ece8ae5a9ba4024b4010.png" alt="Amz123" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Amz123</div>
                     </a><a href="https://sellercentral.amazon.com/fba/profitabilitycalculator/index?mons_sel_locale=zh_CN" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(11).ico" alt="FBA计算器" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(10).ico" alt="FBA计算器" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">FBA计算器</div>
                     </a><a href="https://www.sif.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/logo.png" alt="Sif" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/logo.png" alt="Sif" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Sif</div>
                     </a><a href="https://www.sellersprite.com/v2/welcome" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(12).ico" alt="卖家精灵" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(11).ico" alt="卖家精灵" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">卖家精灵</div>
                     </a><a href="https://www.xiyouzhaoci.com/" class="nav-item" target="_blank" data-group-id="group_1757746003950_rqernikhb" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(13).ico" alt="西柚找词" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(12).ico" alt="西柚找词" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">西柚找词</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664098158_b4ydu2u0q">在线翻译</h2><div class="nav-grid"><a href="https://translate.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(14).ico" alt="谷歌翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664098158_b4ydu2u0q">在线翻译</h2><div class="nav-grid"><a href="https://translate.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(13).ico" alt="谷歌翻译" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">谷歌翻译</div>
                     </a><a href="https://www.deepl.com/translator" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(15).ico" alt="Deepl" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(14).ico" alt="Deepl" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Deepl</div>
                     </a><a href="https://fanyi.youdao.com/#/TextTranslate" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(16).ico" alt="有道翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(15).ico" alt="有道翻译" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">有道翻译</div>
                     </a><a href="https://fanyi.baidu.com/mtpe-individual/transText#/" class="nav-item" target="_blank" data-group-id="group_1757664098158_b4ydu2u0q" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(17).ico" alt="百度翻译" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(16).ico" alt="百度翻译" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">百度翻译</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757640908688_36lglsc9o">大模型</h2><div class="nav-grid"><a href="https://chat.openai.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/globe.svg" alt="Chatgpt" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757640908688_36lglsc9o">大模型</h2><div class="nav-grid"><a href="https://chat.openai.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="https://chat.openai.com/favicon.ico" alt="Chatgpt" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Chatgpt</div>
                     </a><a href="https://chat.deepseek.com/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon.svg" alt="Deepseek" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon.svg" alt="Deepseek" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Deepseek</div>
                     </a><a href="https://chat.qwen.ai/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon.png" alt="Qwen" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon.png" alt="Qwen" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Qwen</div>
                     </a><a href="https://www.doubao.com/chat/" class="nav-item" target="_blank" data-group-id="group_1757640908688_36lglsc9o" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/doubao.com.webp" alt="豆包" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/doubao.com.webp" alt="豆包" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">豆包</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664333733_473a779fn">工具箱</h2><div class="nav-grid"><a href="https://www.iconfont.cn/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(18).ico" alt="Iconfont" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664333733_473a779fn">工具箱</h2><div class="nav-grid"><a href="https://www.iconfont.cn/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/favicon(17).ico" alt="Iconfont" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Iconfont</div>
                     </a><a href="https://www.emojiall.com/zh-hans/node/70" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(19).ico" alt="Emoji all" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(18).ico" alt="Emoji all" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Emoji all</div>
                     </a><a href="https://www.17track.net/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/5c2c67043c8110681c84c2e2.png" alt="国际物流查询" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/5c2c67043c8110681c84c2e2.png" alt="国际物流查询" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">国际物流查询</div>
                     </a><a href="https://ziplucas.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(20).ico" alt="美国邮政编码地址" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(19).ico" alt="美国邮政编码地址" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">美国邮政编码地址</div>
                     </a><a href="https://samezip.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(21).ico" alt="Samezip" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(20).ico" alt="Samezip" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Samezip</div>
                     </a><a href="https://www.google.com/maps" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(22).ico" alt="谷歌地图" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(1).ico" alt="谷歌地图" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">谷歌地图</div>
                     </a><a href="https://www.wearesellers.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="6" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(23).ico" alt="知无不言" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(21).ico" alt="知无不言" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">知无不言</div>
                     </a><a href="https://www.cifnews.com/" class="nav-item" target="_blank" data-group-id="group_1757664333733_473a779fn" data-index="7" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(24).ico" alt="雨果网" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(22).ico" alt="雨果网" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">雨果网</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664452005_jv4gy7p8g">邮箱</h2><div class="nav-grid"><a href="https://mail.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/gmail.ico" alt="谷歌邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group_1757664452005_jv4gy7p8g">邮箱</h2><div class="nav-grid"><a href="https://mail.google.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/gmail.ico" alt="谷歌邮箱" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">谷歌邮箱</div>
                     </a><a href="https://outlook.live.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(25).ico" alt="Outlook" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(23).ico" alt="Outlook" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">Outlook</div>
                     </a><a href="https://exmail.qq.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(26).ico" alt="企业微信邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(24).ico" alt="企业微信邮箱" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">企业微信邮箱</div>
                     </a><a href="https://mail.163.com/" class="nav-item" target="_blank" data-group-id="group_1757664452005_jv4gy7p8g" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(27).ico" alt="163邮箱" class="nav-icon" onerror="this.src='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg'">
+                        <img src="./知鸟导航_files/favicon(25).ico" alt="163邮箱" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
                         <div class="nav-name">163邮箱</div>
-                    </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div></div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div><h2 class="group-title" data-group-id="group1758768515006">常用文件</h2><div class="nav-grid"><a href="https://shimo.im/sheets/VMAPLXwRo9cBB1Ag/MODOC" class="nav-item" target="_blank" data-group-id="group1758768515006" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
+                        <img src="./知鸟导航_files/shimo.svg" alt="货件跟踪" class="nav-icon" onerror="this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;">
+                        <div class="nav-name">货件跟踪</div>
+                    </a><button class="add-btn"><i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div></button></div></div>
     </div>
     
     <!-- 底部控制 -->
@@ -1017,7 +1037,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">添加网站</h5>
-                <button class="modal-close" onclick="closeModal('addWebsiteModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;addWebsiteModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1030,7 +1050,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addWebsiteModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;addWebsiteModal&#39;)">取消</button>
                 <button type="button" class="btn btn-primary" onclick="addWebsite()">添加</button>
             </div>
         </div>
@@ -1041,7 +1061,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">编辑网站</h5>
-                <button class="modal-close" onclick="closeModal('editWebsiteModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;editWebsiteModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1058,7 +1078,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">分组</label>
-                    <select class="form-select" id="editGroup"><option value="group1">常用网站</option><option value="group_1757746003950_rqernikhb">Amazon运营工具</option><option value="group_1757664098158_b4ydu2u0q">在线翻译</option><option value="group_1757640908688_36lglsc9o">大模型</option><option value="group_1757664333733_473a779fn">工具箱</option><option value="group_1757664452005_jv4gy7p8g">邮箱</option></select>
+                    <select class="form-select" id="editGroup"><option value="group1">常用网站</option><option value="group_1757746003950_rqernikhb">Amazon运营工具</option><option value="group_1757664098158_b4ydu2u0q">在线翻译</option><option value="group_1757640908688_36lglsc9o">大模型</option><option value="group_1757664333733_473a779fn">工具箱</option><option value="group_1757664452005_jv4gy7p8g">邮箱</option><option value="group1758768515006">常用文件</option></select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1066,7 +1086,7 @@
                     <i class="fas fa-sync-alt"></i> 刷新图标
                 </button>
                 <button type="button" class="btn btn-danger" onclick="deleteWebsite()">删除</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editWebsiteModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;editWebsiteModal&#39;)">取消</button>
                 <button type="button" class="btn btn-primary" onclick="saveEdit()">保存</button>
             </div>
         </div>
@@ -1077,7 +1097,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">添加分组</h5>
-                <button class="modal-close" onclick="closeModal('addGroupModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;addGroupModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1086,7 +1106,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addGroupModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;addGroupModal&#39;)">取消</button>
                 <button type="button" class="btn btn-primary" onclick="addGroup()">添加</button>
             </div>
         </div>
@@ -1097,7 +1117,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">编辑分组</h5>
-                <button class="modal-close" onclick="closeModal('editGroupModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;editGroupModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1107,7 +1127,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" onclick="deleteGroup()">删除分组</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editGroupModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;editGroupModal&#39;)">取消</button>
                 <button type="button" class="btn btn-primary" onclick="saveGroupEdit()">保存</button>
             </div>
         </div>
@@ -1118,7 +1138,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">修改分组名称</h5>
-                <button class="modal-close" onclick="closeModal('editGroupNameModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;editGroupNameModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1127,7 +1147,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editGroupNameModal')">取消</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;editGroupNameModal&#39;)">取消</button>
                 <button type="button" class="btn btn-primary" onclick="saveGroupNameEdit()">保存</button>
             </div>
         </div>
@@ -1138,7 +1158,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">设置</h5>
-                <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
+                <button class="modal-close" onclick="closeModal(&#39;settingsModal&#39;)">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1161,7 +1181,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('settingsModal')">关闭</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal(&#39;settingsModal&#39;)">关闭</button>
             </div>
         </div>
     </div>
@@ -1315,8 +1335,9 @@
                 document.getElementById('currentEngineIcon').src = currentEngine.favicon;
             }
             
+            // 初始化分组拖拽功能
+            initGroupDragAndDrop();
 
-            
             // 设置初始背景
             const savedBackground = localStorage.getItem('backgroundImage');
             const savedIndex = localStorage.getItem('backgroundIndex');
@@ -1479,7 +1500,91 @@
             });
         }
 
-        // 渲染所有分组（完整渲染函数）
+        // 分组拖拽相关变量
+        let dragSrcGroupElement = null;
+
+        // 初始化分组拖拽功能
+        function initGroupDragAndDrop() {
+            const groupTitles = document.querySelectorAll('.group-title');
+            groupTitles.forEach(title => {
+                title.setAttribute('draggable', 'true');
+                title.addEventListener('dragstart', handleGroupDragStart);
+                title.addEventListener('dragover', handleGroupDragOver);
+                title.addEventListener('dragenter', handleGroupDragEnter);
+                title.addEventListener('dragleave', handleGroupDragLeave);
+                title.addEventListener('drop', handleGroupDrop);
+                title.addEventListener('dragend', handleGroupDragEnd);
+            });
+        }
+
+        // 分组拖拽开始事件
+        function handleGroupDragStart(e) {
+            e.stopPropagation();
+            
+            dragSrcGroupElement = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            this.classList.add('dragging');
+        }
+
+        // 分组拖拽过程中阻止默认行为
+        function handleGroupDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        // 分组拖拽进入元素
+        function handleGroupDragEnter(e) {
+            this.classList.add('drag-over');
+        }
+
+        // 分组拖拽离开元素
+        function handleGroupDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        // 分组拖拽放置事件
+        function handleGroupDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            this.classList.remove('drag-over');
+
+            if (dragSrcGroupElement != this) {
+                const srcGroupId = dragSrcGroupElement.dataset.groupId;
+                const targetGroupId = this.dataset.groupId;
+
+                // 找到源分组和目标分组的索引
+                const srcIndex = websiteGroups.findIndex(g => g.id === srcGroupId);
+                const targetIndex = websiteGroups.findIndex(g => g.id === targetGroupId);
+
+                if (srcIndex !== -1 && targetIndex !== -1) {
+                    // 交换分组位置
+                    const [movedGroup] = websiteGroups.splice(srcIndex, 1);
+                    websiteGroups.splice(targetIndex, 0, movedGroup);
+                    
+                    saveWebsites();
+                    renderGroups();
+                    // 重新初始化分组拖拽功能
+                    setTimeout(initGroupDragAndDrop, 100);
+                }
+            }
+
+            return false;
+        }
+
+        // 分组拖拽结束事件
+        function handleGroupDragEnd(e) {
+            document.querySelectorAll('.group-title').forEach(title => {
+                title.classList.remove('dragging', 'drag-over');
+            });
+        }
+
+        // 渲染所有分组（完整渲染函数）- 更新以支持分组拖拽
         function renderGroups() {
             const container = document.getElementById('groupsContainer');
             container.innerHTML = '';
@@ -1490,6 +1595,7 @@
                 title.className = 'group-title';
                 title.textContent = group.name;
                 title.dataset.groupId = group.id;
+                title.setAttribute('draggable', 'true'); // 启用拖拽
                 
                 // 添加右键编辑分组名称功能
                 title.oncontextmenu = function(e) {
@@ -1544,12 +1650,15 @@
                 // 每个分组都显示添加网站按钮（恢复之前的功能）
                 const addButton = document.createElement('button');
                 addButton.className = 'add-btn';
-                addButton.innerHTML = '<i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div>';
+                addButton.innerHTML = '<div class="nav-name">添加网站</div>';
                 addButton.onclick = () => openAddWebsiteModal(group.id);
                 grid.appendChild(addButton);
 
                 container.appendChild(grid);
             });
+            
+            // 重新初始化分组拖拽功能
+            setTimeout(initGroupDragAndDrop, 100);
         }
 
         // 渲染单个分组（优化性能，只渲染指定分组）
@@ -1592,7 +1701,7 @@
                 item.dataset.groupId = group.id;
                 item.dataset.index = index;
                 item.draggable = true; // 启用拖拽
-                
+                    
                 // 添加防止焦点轮廓的属性（但不影响拖拽功能）
                 item.setAttribute('hidefocus', 'true');
                 item.style.outline = 'none';
@@ -1624,7 +1733,7 @@
             // 添加该分组的添加网站按钮
             const addButton = document.createElement('button');
             addButton.className = 'add-btn';
-            addButton.innerHTML = '<i class="fas fa-plus add-icon"></i><div class="nav-name">添加网站</div>';
+            addButton.innerHTML = '<div class="nav-name">添加网站</div>';
             addButton.onclick = () => openAddWebsiteModal(group.id);
             groupGrid.appendChild(addButton);
         }
@@ -2742,6 +2851,7 @@ Gist URL: ${gistUrl}`);
             setInterval(updateClock, 1000);
         }
     </script>
+
 
 
 
