@@ -130,7 +130,7 @@
             font-size: var(--font-size-base);
             color: var(--color-text-dark);
             opacity: 0.8;
-            margin-top: -5px;
+            margin-top: 10px;
             margin-bottom: var(--space-8);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
@@ -666,19 +666,27 @@
 
         .modal.show {
             display: flex;
+            backdrop-filter: blur(10px);
         }
 
         .modal-content {
-            background: var(--color-card-bg);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-2xl);
             box-shadow: var(--shadow-xl);
             width: 90%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         [data-theme="dark"] .modal-content {
+            background: rgba(30, 30, 46, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow-xl);
         }
 
@@ -1084,6 +1092,43 @@
             bing: { name: '必应', url: 'https://www.bing.com/search?q=', favicon: 'https://www.bing.com/favicon.ico' },
             duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=', favicon: 'https://duckduckgo.com/favicon.ico' }
         };
+        
+        // 获取 Bing 每日一图
+        async function fetchBingWallpapers() {
+            try {
+                // 使用 Bing 官方 API 获取今日壁纸
+                const response = await fetch('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN');
+                const data = await response.json();
+                
+                if (data.images && data.images.length > 0) {
+                    bingWallpapers = data.images.map(img => ({
+                        url: `https://www.bing.com${img.url}`,
+                        copyright: img.copyright,
+                        date: img.enddate
+                    }));
+                    return bingWallpapers;
+                }
+            } catch (error) {
+                console.error('获取 Bing 壁纸失败:', error);
+            }
+            return [];
+        }
+        
+        // 设置壁纸
+        function setBingWallpaper(index) {
+            if (bingWallpapers.length === 0) return;
+            
+            const wallpaper = bingWallpapers[index];
+            document.body.style.backgroundImage = `url('${wallpaper.url}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            
+            currentWallpaperIndex = index;
+            localStorage.setItem('backgroundImage', `url('${wallpaper.url}')`);
+            localStorage.setItem('backgroundIndex', index);
+        }
 
         // 初始化时钟
         function initClock() {
@@ -1648,30 +1693,20 @@
 
         // 壁纸预览功能
         function showWallpaperPreview() {
-            // 使用 Unsplash 随机壁纸 API，每次点击都获取不同的随机壁纸
-            const randomId = Math.random().toString(36).substring(2, 15);
-            const wallpaperUrl = `https://source.unsplash.com/1920x1080/?nature,landscape,abstract&sig=${randomId}`;
-            
-            // 备用方案：使用 Picsum 随机壁纸
-            const alternatives = [
-                `https://picsum.photos/1920/1080?random=${Date.now()}`,
-                `https://picsum.photos/1920/1080?nature&random=${Date.now()}`,
-                `https://picsum.photos/1920/1080?landscape&random=${Date.now()}`
-            ];
-            
-            // 随机选择一个备用方案
-            const randomIndex = Math.floor(Math.random() * alternatives.length);
-            const finalUrl = Math.random() > 0.5 ? wallpaperUrl : alternatives[randomIndex];
-            
-            document.body.style.backgroundImage = `url('${finalUrl}')`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundAttachment = 'fixed';
-            
-            currentWallpaperIndex++;
-            localStorage.setItem('backgroundImage', `url('${finalUrl}')`);
-            localStorage.setItem('backgroundIndex', currentWallpaperIndex);
+            if (bingWallpapers.length === 0) {
+                // 如果还没有加载 Bing 壁纸，先获取
+                fetchBingWallpapers().then(() => {
+                    if (bingWallpapers.length > 0) {
+                        // 切换到下一张壁纸
+                        const nextIndex = (currentWallpaperIndex + 1) % bingWallpapers.length;
+                        setBingWallpaper(nextIndex);
+                    }
+                });
+            } else {
+                // 切换到下一张 Bing 壁纸
+                const nextIndex = (currentWallpaperIndex + 1) % bingWallpapers.length;
+                setBingWallpaper(nextIndex);
+            }
         }
 
         // 初始化
@@ -1686,23 +1721,20 @@
                 document.getElementById('currentEngineIcon').src = currentEngine.favicon;
             }
             
-            const savedBackground = localStorage.getItem('backgroundImage');
-            const savedIndex = localStorage.getItem('backgroundIndex');
-            if (savedBackground && savedIndex) {
-                document.body.style.backgroundImage = savedBackground;
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundPosition = 'center';
-                document.body.style.backgroundRepeat = 'no-repeat';
-                document.body.style.backgroundAttachment = 'fixed';
-                currentWallpaperIndex = parseInt(savedIndex);
-            } else {
-                const defaultWallpaper = { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&h=1080&q=80' };
-                document.body.style.backgroundImage = `url('${defaultWallpaper.url}')`;
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundPosition = 'center';
-                document.body.style.backgroundRepeat = 'no-repeat';
-                document.body.style.backgroundAttachment = 'fixed';
-            }
+            // 获取 Bing 壁纸
+            fetchBingWallpapers().then(() => {
+                const savedIndex = localStorage.getItem('backgroundIndex');
+                if (savedIndex && bingWallpapers.length > 0) {
+                    const index = parseInt(savedIndex);
+                    if (index >= 0 && index < bingWallpapers.length) {
+                        setBingWallpaper(index);
+                    } else {
+                        setBingWallpaper(0); // 默认使用第一张（今日壁纸）
+                    }
+                } else if (bingWallpapers.length > 0) {
+                    setBingWallpaper(0); // 默认使用第一张（今日壁纸）
+                }
+            });
         }
 
         // 页面加载完成后初始化
