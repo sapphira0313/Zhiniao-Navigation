@@ -1553,12 +1553,12 @@
             closeModal('editWebsiteModal');
         }
 
-        // 获取网站图标
+        // 获取网站图标（使用Google的favicon服务避免跨域问题）
         async function getWebsiteIcon(url) {
             try {
                 const urlObj = new URL(url);
                 const domain = urlObj.hostname;
-                const iconUrl = `https://${domain}/favicon.ico`;
+                const iconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
                 
                 const img = new Image();
                 img.src = iconUrl;
