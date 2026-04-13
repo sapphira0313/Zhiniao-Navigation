@@ -4,12 +4,11 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知鸟导航</title>
-    <link rel="icon" href="https://sapphira0313.github.io/Zhiniao-Navigation/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="https://sapphira0313.github.io/Zhiniao-Navigation/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg" type="image/svg+xml">
     <!-- Bootstrap CSS -->
-    <link href="./知鸟导航_files/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./知鸟导航_files/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             /* Color Tokens */
@@ -900,7 +899,7 @@
         <!-- 搜索框 -->
         <div class="search-container">
             <div class="search-engine-icon" onclick="toggleEngineDropdown()" id="currentEngineDisplay">
-                <img src="./知鸟导航_files/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
+                <img src="https://www.baidu.com/favicon.ico" alt="百度" class="engine-icon-img" id="currentEngineIcon">
             </div>
             <input type="text" class="search-input" id="searchInput" placeholder="搜索或输入网址..." onkeypress="if(event.key===&#39;Enter&#39;) performSearch()">
             <button class="search-btn" onclick="performSearch()">
@@ -908,20 +907,20 @@
             </button>
             <!-- 搜索引擎选择器 -->
             <div class="engine-dropdown" id="engineDropdown" style="display: none;">
-                <div class="engine-option" data-engine="baidu" onclick="selectEngine(&#39;baidu&#39;)">
-                    <img src="./知鸟导航_files/favicon.ico" alt="百度">
+                <div class="engine-option" data-engine="baidu" onclick="selectEngine('baidu')">
+                    <img src="https://www.baidu.com/favicon.ico" alt="百度">
                     <span>百度</span>
                 </div>
-                <div class="engine-option" data-engine="google" onclick="selectEngine(&#39;google&#39;)">
-                    <img src="./知鸟导航_files/favicon(1).ico" alt="Google">
+                <div class="engine-option" data-engine="google" onclick="selectEngine('google')">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
                     <span>Google</span>
                 </div>
-                <div class="engine-option" data-engine="bing" onclick="selectEngine(&#39;bing&#39;)">
-                    <img src="./知鸟导航_files/favicon(2).ico" alt="必应">
+                <div class="engine-option" data-engine="bing" onclick="selectEngine('bing')">
+                    <img src="https://www.bing.com/favicon.ico" alt="必应">
                     <span>必应</span>
                 </div>
-                <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine(&#39;duckduckgo&#39;)">
-                    <img src="./知鸟导航_files/favicon(3).ico" alt="DuckDuckGo">
+                <div class="engine-option" data-engine="duckduckgo" onclick="selectEngine('duckduckgo')">
+                    <img src="https://duckduckgo.com/favicon.ico" alt="DuckDuckGo">
                     <span>DuckDuckGo</span>
                 </div>
             </div>
@@ -931,28 +930,28 @@
     <!-- 主要内容区域 -->
     <div class="main-content" style="max-width: 1200px; margin: 0 auto;">
         <div id="groupsContainer"><div class="group-title-container"><h2 class="group-title" data-group-id="group1" draggable="true" title="双击编辑分组名称，右键菜单也可编辑">常用网站</h2><button class="group-delete-btn" title="删除分组" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"><i class="fas fa-trash"></i></button></div><div class="nav-grid"><a href="https://www.google.com/" class="nav-item" target="_blank" data-group-id="group1" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(1).ico" alt="Google" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://www.google.com/favicon.ico" alt="Google" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">Google</div>
                     </a><a href="https://github.com/" class="nav-item" target="_blank" data-group-id="group1" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(4).ico" alt="GitHub" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://github.com/favicon.ico" alt="GitHub" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">GitHub</div>
                     </a><a href="https://www.notion.so/" class="nav-item" target="_blank" data-group-id="group1" data-index="2" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/globe.svg" alt="Notion" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://www.notion.so/favicon.ico" alt="Notion" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">Notion</div>
                     </a><a href="https://chatgpt.com/" class="nav-item" target="_blank" data-group-id="group1" data-index="3" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/globe.svg" alt="ChatGPT" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://chatgpt.com/favicon.ico" alt="ChatGPT" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">ChatGPT</div>
                     </a><a href="https://www.notion.com/zh-cn" class="nav-item" target="_blank" data-group-id="group1" data-index="4" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/globe.svg" alt="notion" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://www.notion.com/favicon.ico" alt="notion" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">notion</div>
                     </a><a href="https://fanyi.youdao.com/#/TextTranslate" class="nav-item" target="_blank" data-group-id="group1" data-index="5" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/globe.svg" alt="有道翻译" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://fanyi.youdao.com/favicon.ico" alt="有道翻译" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">有道翻译</div>
                     </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><div class="group-title-container"><h2 class="group-title" data-group-id="group2" draggable="true" title="双击编辑分组名称，右键菜单也可编辑">开发工具</h2><button class="group-delete-btn" title="删除分组" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"><i class="fas fa-trash"></i></button></div><div class="nav-grid"><a href="https://developer.mozilla.org/" class="nav-item" target="_blank" data-group-id="group2" data-index="0" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(5).ico" alt="MDN" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://developer.mozilla.org/favicon.ico" alt="MDN" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">MDN</div>
                     </a><a href="https://stackoverflow.com/" class="nav-item" target="_blank" data-group-id="group2" data-index="1" draggable="true" hidefocus="true" style="outline: none; -webkit-tap-highlight-color: transparent;">
-                        <img src="./知鸟导航_files/favicon(6).ico" alt="Stack Overflow" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
+                        <img src="https://stackoverflow.com/favicon.ico" alt="Stack Overflow" class="nav-icon loaded" onerror="this.onerror=null; this.src=&#39;https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/globe.svg&#39;;" onload="this.classList.add(&#39;loaded&#39;);">
                         <div class="nav-name">Stack Overflow</div>
                     </a><button class="add-btn"><div class="nav-name">添加网站</div></button></div><div class="add-group-container"><button class="add-group-btn"><i class="fas fa-plus"></i> 添加分组</button></div></div>
     </div>
@@ -1118,8 +1117,10 @@
         // 获取 Bing 每日一图
         async function fetchBingWallpapers() {
             try {
-                // 使用 Bing 官方 API 获取今日壁纸
-                const response = await fetch('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN');
+                // 使用 Bing 官方 API 获取今日壁纸（使用 no-cors 模式）
+                const response = await fetch('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN', {
+                    mode: 'no-cors'
+                });
                 const data = await response.json();
                 
                 if (data.images && data.images.length > 0) {
@@ -1131,15 +1132,16 @@
                     return bingWallpapers;
                 }
             } catch (error) {
-                console.error('获取 Bing 壁纸失败:', error);
-                // 备用方案：使用 Unsplash 壁纸
-                bingWallpapers = [
-                    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '自然风景', date: '' },
-                    { url: 'https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '山脉', date: '' },
-                    { url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '湖泊', date: '' },
-                    { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '草原', date: '' }
-                ];
+                console.log('Bing API 不可用，使用默认壁纸');
             }
+            
+            // 备用方案：使用 Unsplash 壁纸
+            bingWallpapers = [
+                { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '自然风景', date: '' },
+                { url: 'https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '山脉', date: '' },
+                { url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '湖泊', date: '' },
+                { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80', copyright: '草原', date: '' }
+            ];
             return bingWallpapers;
         }
         
